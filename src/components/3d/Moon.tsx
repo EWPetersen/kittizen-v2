@@ -74,19 +74,24 @@ export const Moon: React.FC<MoonProps> = ({
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
-    if (position) return new Vector3(...position);
+    // If we have orbitData (which includes the parent's position), use it for positioning
+    // rather than the absolute position from the data
     if (orbitData) {
-      // For now, just place at semimajor axis distance along x-axis
-      // In real implementation, this would be based on time and orbital parameters
       const parent = new Vector3(...orbitData.parentPosition);
+      // Add a random offset around the parent based on semi-major axis
+      // This creates a more visually appealing arrangement of moons
+      const angle = name.charCodeAt(0) * 0.5; // Use name to create a consistent angle
       return new Vector3(
-        parent.x + orbitData.semiMajorAxis * SCALE_FACTOR,
-        parent.y,
+        parent.x + Math.cos(angle) * orbitData.semiMajorAxis,
+        parent.y + Math.sin(angle) * orbitData.semiMajorAxis,
         parent.z
       );
     }
+    // Fall back to absolute position if no orbit data
+    if (position) return new Vector3(...position);
+    
     return new Vector3(0, 0, 0);
-  }, [position, orbitData]);
+  }, [position, orbitData, name]);
   
   // Animation for rotation
   useFrame(({ clock }) => {

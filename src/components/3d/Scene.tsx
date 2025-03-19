@@ -230,42 +230,26 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
           )}
           isSelected={selectedObject === planet.id}
           debug={debug}
-        >
-          {/* Render moons that belong to this planet */}
-          {moons
-            .filter(moon => moon.parent === planet.id)
-            .map(moon => (
-              <Moon
-                key={moon.id}
-                position={[
-                  moon.position.x - planet.position.x, 
-                  moon.position.y - planet.position.y, 
-                  moon.position.z - planet.position.z
-                ]}
-                name={moon.name}
-                diameter={moon.size}
-                color={moon.color}
-                onClick={() => handleSelectObject(moon.id)}
-                onDoubleClick={() => handleObjectDoubleClick(
-                  moon.id,
-                  moon.position,
-                  CelestialType.MOON,
-                  moon.size
-                )}
-                isSelected={selectedObject === moon.id}
-                debug={debug}
-              />
-            ))}
-        </Planet>
+        />
       ))}
       
-      {/* Only render moons that don't have a parent (should be none) */}
-      {moons
-        .filter(moon => !moon.parent || !systemData[moon.parent])
-        .map(moon => (
+      {/* Moons */}
+      {moons.map(moon => {
+        // Get the parent object to use for proper positioning
+        const parentObj = moon.parent ? systemData[moon.parent] : null;
+        const orbitData = moon.orbit && parentObj ? {
+          parentPosition: [parentObj.position.x, parentObj.position.y, parentObj.position.z] as [number, number, number],
+          semiMajorAxis: moon.orbit.semiMajorAxis,
+          eccentricity: moon.orbit.eccentricity || 0.01,
+          inclination: moon.orbit.inclination || 0,
+          rotation: 0
+        } : undefined;
+        
+        return (
           <Moon
             key={moon.id}
             position={[moon.position.x, moon.position.y, moon.position.z]}
+            orbitData={orbitData}
             name={moon.name}
             diameter={moon.size}
             color={moon.color}
@@ -279,7 +263,8 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
             isSelected={selectedObject === moon.id}
             debug={debug}
           />
-        ))}
+        );
+      })}
       
       {/* Stations */}
       {stations.map(station => (
