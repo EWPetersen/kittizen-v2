@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useThree } from '@react-three/fiber';
 import { Canvas } from './Canvas';
 import { Scene } from './Scene';
 import { SCALE_FACTOR } from './constants';
-import * as Utils from './utils';
+import CameraControls from './CameraControls';
+import { CameraMode } from './CameraController';
 
 interface StantonSystemProps {
   width?: string;
@@ -22,6 +22,17 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
   const [fps, setFps] = useState<number>(0);
   const [selectedObject, setSelectedObject] = useState<string | null>(null);
   const [objectInfo, setObjectInfo] = useState<any | null>(null);
+  const [currentCameraMode, setCurrentCameraMode] = useState<CameraMode>(CameraMode.OVERVIEW);
+  
+  // Available celestial bodies for quick selection
+  const [availableCelestialBodies] = useState([
+    { name: "Stanton", type: "star" },
+    { name: "microTech", type: "planet" },
+    { name: "ArcCorp", type: "planet" },
+    { name: "Clio", type: "moon" },
+    { name: "New Babbage", type: "station" },
+    { name: "Stanton-Pyro Jump", type: "jump_point" }
+  ]);
   
   // Performance monitoring
   useEffect(() => {
@@ -75,6 +86,68 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
     }
   };
   
+  // Camera control handlers - these will call methods on window.sceneCameraController
+  const handleZoomIn = () => {
+    if ((window as any).sceneCameraController) {
+      (window as any).sceneCameraController.zoomIn();
+    }
+  };
+  
+  const handleZoomOut = () => {
+    if ((window as any).sceneCameraController) {
+      (window as any).sceneCameraController.zoomOut();
+    }
+  };
+  
+  const handleStopZoom = () => {
+    if ((window as any).sceneCameraController) {
+      (window as any).sceneCameraController.stopZoom();
+    }
+  };
+  
+  const handleResetView = () => {
+    if ((window as any).sceneCameraController) {
+      (window as any).sceneCameraController.resetView();
+      setCurrentCameraMode(CameraMode.OVERVIEW);
+      setSelectedObject(null);
+      setObjectInfo(null);
+    }
+  };
+  
+  const handleSwitchMode = (mode: CameraMode) => {
+    setCurrentCameraMode(mode);
+    if ((window as any).sceneCameraController) {
+      (window as any).sceneCameraController.setCameraMode(mode);
+    }
+  };
+  
+  const handleQuickSelect = (name: string) => {
+    // Find position and other data for the selected body
+    // When user clicks a quick select button, we need to simulate a focus action
+    if ((window as any).sceneCameraController) {
+      // Get the camera controller from window object
+      const cameraController = (window as any).sceneCameraController;
+      
+      // Set the celestial object as selected (will update the UI)
+      setSelectedObject(name);
+      
+      // We don't have a direct reference to the object data here,
+      // but the cameraController interface handles focusing by name
+      const bodyType = availableCelestialBodies.find(b => b.name === name)?.type;
+      
+      // This is a workaround - ideally we would get actual position and size from data
+      // For now, setting to focus on the object by name will rely on 
+      // the window.sceneCameraController to find and focus the correct object
+      if (bodyType) {
+        // Trigger an item selection in the 3D scene
+        // The actual camera movement will happen inside the Scene component
+        if (onSelect) {
+          onSelect(name);
+        }
+      }
+    }
+  };
+  
   return (
     <div 
       ref={containerRef}
@@ -90,6 +163,18 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
       <Canvas showStats={showStats}>
         <Scene onSelectObject={handleSelectObject} />
       </Canvas>
+      
+      {/* Camera Controls UI - rendered outside the 3D context */}
+      <CameraControls
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onStopZoom={handleStopZoom}
+        onResetView={handleResetView}
+        onSwitchMode={handleSwitchMode}
+        onQuickSelect={handleQuickSelect}
+        currentMode={currentCameraMode}
+        availableCelestialBodies={availableCelestialBodies}
+      />
       
       {/* Performance overlay */}
       {!showStats && (
@@ -176,24 +261,4 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
       )}
     </div>
   );
-};
-
-// This component can be used inside the Scene component to handle camera state
-export const CameraManager: React.FC = () => {
-  const { camera } = useThree();
-  
-  // Access and manage camera state
-  useEffect(() => {
-    // Initial camera setup
-    camera.position.set(0, 50, 200);
-    camera.lookAt(0, 0, 0);
-    
-    // You can add listeners or other camera management logic here
-    
-    return () => {
-      // Cleanup if needed
-    };
-  }, [camera]);
-  
-  return null; // This component doesn't render anything
 }; 

@@ -44,7 +44,7 @@ export const CameraControls: React.FC<CameraControlsProps> = ({
   };
   
   return (
-    <div className="camera-controls absolute bottom-4 right-4 flex flex-col gap-2 bg-slate-800/80 backdrop-blur-sm p-3 rounded-lg text-white z-10">
+    <div className="camera-controls fixed bottom-4 right-4 flex flex-col gap-2 bg-slate-800/80 backdrop-blur-sm p-3 rounded-lg text-white z-10">
       <div className="flex flex-row gap-2 justify-between">
         <button 
           onClick={onResetView}
