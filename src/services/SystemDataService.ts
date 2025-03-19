@@ -112,19 +112,38 @@ const buildOrbitData = (
     childPos[2] * childPos[2]
   );
   
-  // Calculate inclination based on z-component
-  const inclination = Math.atan2(childPos[2], Math.sqrt(childPos[0] * childPos[0] + childPos[1] * childPos[1])) * (180 / Math.PI);
+  // Calculate inclination based on z-component (angle from x-y plane)
+  // Improved calculation for true inclination
+  const xy = Math.sqrt(childPos[0] * childPos[0] + childPos[1] * childPos[1]);
+  const inclination = Math.atan2(childPos[2], xy) * (180 / Math.PI);
   
-  // Calculate rotation (longitude of ascending node)
+  // Calculate rotation (longitude of ascending node - angle in x-y plane)
+  // This determines where around the parent the object orbits
   const rotation = Math.atan2(childPos[1], childPos[0]) * (180 / Math.PI);
   
-  // In a real implementation, we'd calculate eccentricity from actual orbital elements
-  // Here we'll just use a simplified approach with random small eccentricity
-  const eccentricity = Math.random() * 0.1; // 0-0.1 eccentricity
+  // Add slight eccentricity but keep orbits mostly circular
+  const eccentricity = 0.05; 
+  
+  console.debug(`Orbit data for child of ${parentName}:`, {
+    distance: distance / 1000000000, // in Gm
+    inclination,
+    rotation,
+    eccentricity,
+    childPosition: [
+      child.position.x / 1000000000, 
+      child.position.y / 1000000000, 
+      child.position.z / 1000000000
+    ],
+    parentPosition: [
+      parent.position.x / 1000000000, 
+      parent.position.y / 1000000000, 
+      parent.position.z / 1000000000
+    ]
+  });
   
   return {
     parentPosition,
-    semiMajorAxis: distance,
+    semiMajorAxis: distance / 1000000000, // Convert meters to Gm
     eccentricity,
     inclination,
     rotation
@@ -408,54 +427,18 @@ class SystemDataService {
    * Process the raw system data into a format usable for visualization
    */
   private processSystemData(): void {
-    try {
-      if (!this.rawData || !this.rawData.root) {
-        console.error('Failed to load system data: missing root object');
-        return;
-      }
-      
-      // Process the root star
-      this.processObject(this.rawData.root, null);
-      this.rootObject = this.rawData.root.name;
-      
-      // After processing all objects, ensure all parent-child relationships are correctly set
-      this.fixParentChildRelationships();
-      
-      console.info('System data loaded successfully');
-    } catch (error) {
-      console.error('Error processing system data:', error);
+    if (!this.rawData || !this.rawData.root) {
+      console.error('Invalid system data format');
+      return;
     }
-  }
-  
-  /**
-   * Fix any inconsistencies in parent-child relationships
-   * This is needed because the JSON data stores absolute positions
-   */
-  private fixParentChildRelationships(): void {
-    // In our data, planets and moons have parent fields but are positioned with absolute coordinates
-    // This function ensures the moons are correctly attached to their parents
     
-    // Get all objects
-    const objects = Object.values(this.processedData);
+    // Process the hierarchical structure starting from the root
+    this.processObject(this.rawData.root, null);
+    this.rootObject = this.rawData.root.name;
     
-    // Fix moon parent relationships
-    const moons = objects.filter(obj => obj.type === CelestialType.MOON);
-    
-    moons.forEach(moon => {
-      if (moon.parent) {
-        // Find the parent object
-        const parent = this.processedData[moon.parent];
-        
-        if (parent) {
-          // Ensure this moon is in the parent's children array
-          if (!parent.children.includes(moon.id)) {
-            parent.children.push(moon.id);
-          }
-          
-          // Log for debugging
-          console.debug(`Fixed parent-child relationship: ${moon.name} -> ${parent.name}`);
-        }
-      }
+    console.log('System data processed', {
+      objectCount: Object.keys(this.processedData).length,
+      root: this.rootObject
     });
   }
   
@@ -499,18 +482,13 @@ class SystemDataService {
     }
     
     // Convert position to Vector3
-    let position: Vector3;
-    
-    if (obj.position) {
-      // Convert position from meters to Gm
-      position = new Vector3(
-        obj.position.x / 1000000000,
-        obj.position.y / 1000000000,
-        obj.position.z / 1000000000
-      );
-    } else {
-      position = new Vector3(0, 0, 0);
-    }
+    const position = obj.position 
+      ? new Vector3(
+          obj.position.x / 1000000000, // Convert from meters to Gm
+          obj.position.y / 1000000000,
+          obj.position.z / 1000000000
+        )
+      : new Vector3(0, 0, 0);
     
     // Determine size (diameter or radius)
     let size = 0;
@@ -647,58 +625,47 @@ class SystemDataService {
    * Log debug information about the system
    */
   logDebugInfo(): void {
-    console.debug('SystemDataService - Object Count:', Object.keys(this.processedData).length);
-    console.debug('SystemDataService - Root Object:', this.rootObject);
-
-    // Log all planets and their positions
-    console.debug('SystemDataService - Planets:');
+    // Count objects by type
+    const countByType: Record<string, number> = {};
+    Object.values(this.processedData).forEach(obj => {
+      countByType[obj.type] = (countByType[obj.type] || 0) + 1;
+    });
+    
+    // Calculate some distances to verify
+    const microTech = this.getObjectByName('microTech');
+    const arcCorp = this.getObjectByName('ArcCorp');
+    const hurston = this.getObjectByName('Hurston');
+    const crusader = this.getObjectByName('Crusader');
+    const yela = this.getObjectByName('Yela');
+    const daymar = this.getObjectByName('Daymar');
+    
+    const distances = {
+      'MicroTech to ArcCorp': microTech && arcCorp ? 
+        microTech.position.distanceTo(arcCorp.position).toFixed(2) + ' Gm' : 'N/A',
+      'Hurston to Crusader': hurston && crusader ? 
+        hurston.position.distanceTo(crusader.position).toFixed(2) + ' Gm' : 'N/A',
+      'Yela to Daymar': yela && daymar ? 
+        yela.position.distanceTo(daymar.position).toFixed(2) + ' Gm' : 'N/A'
+    };
+    
+    // Log detailed system info
+    console.info('%c Stanton System Info ', 'background: #002244; color: #88CCFF; font-weight: bold;');
+    console.info('Objects by type:', countByType);
+    console.info('Key distances:', distances);
+    console.info('Scale factor (1 unit = n Gm):', SCALE_FACTOR);
+    
+    // Output planets for verification
     const planets = this.getObjectsByType(CelestialType.PLANET);
-    planets.forEach(planet => {
-      console.debug(`Planet ${planet.name}:`, {
-        position: {
-          x: planet.position.x.toFixed(4),
-          y: planet.position.y.toFixed(4),
-          z: planet.position.z.toFixed(4)
-        },
-        size: planet.size,
-        parent: planet.parent
-      });
-    });
-
-    // Log all moons and their positions
-    console.debug('SystemDataService - Moons:');
-    const moons = this.getObjectsByType(CelestialType.MOON);
-    moons.forEach(moon => {
-      const parentObj = moon.parent ? this.processedData[moon.parent] : null;
-      console.debug(`Moon ${moon.name} (parent: ${moon.parent}):`, {
-        position: {
-          x: moon.position.x.toFixed(4),
-          y: moon.position.y.toFixed(4),
-          z: moon.position.z.toFixed(4)
-        },
-        parentPosition: parentObj ? {
-          x: parentObj.position.x.toFixed(4),
-          y: parentObj.position.y.toFixed(4),
-          z: parentObj.position.z.toFixed(4)
-        } : 'Unknown',
-        size: moon.size,
-        parentName: parentObj ? parentObj.name : 'Unknown'
-      });
-    });
-
-    // Log parent-child relationships
-    console.debug('SystemDataService - Parent-Child Relationships:');
-    Object.keys(this.processedData).forEach(id => {
-      const obj = this.processedData[id];
-      if (obj.parent) {
-        const parentObj = this.processedData[obj.parent];
-        if (parentObj) {
-          console.debug(`${obj.name} -> ${parentObj.name}`);
-        } else {
-          console.debug(`${obj.name} -> Unknown parent: ${obj.parent}`);
-        }
-      }
-    });
+    console.info('Planets:', planets.map(p => ({
+      name: p.name,
+      position: {
+        x: p.position.x.toFixed(2),
+        y: p.position.y.toFixed(2),
+        z: p.position.z.toFixed(2)
+      },
+      size: p.size,
+      parent: p.parent
+    })));
   }
   
   /**

@@ -51,47 +51,51 @@ export const Moon: React.FC<MoonProps> = ({
   React.useEffect(() => {
     if (debug) {
       console.debug(`Moon ${name}:`, {
-        position: position ? {
-          x: position[0].toFixed(4),
-          y: position[1].toFixed(4),
-          z: position[2].toFixed(4)
-        } : 'None',
-        orbitData: orbitData ? {
-          parentPosition: orbitData.parentPosition ? {
-            x: orbitData.parentPosition[0].toFixed(4),
-            y: orbitData.parentPosition[1].toFixed(4),
-            z: orbitData.parentPosition[2].toFixed(4)
-          } : 'None',
-          semiMajorAxis: orbitData.semiMajorAxis
-        } : 'None',
+        position,
         diameter,
         radius: (diameter / 2) / 1000000 * SCALE_FACTOR, // Actual radius without visual scale
         visualRadius: radius, // Scaled radius for display
         visualScaleFactor
       });
     }
-  }, [name, position, orbitData, diameter, radius, debug, visualScaleFactor]);
+  }, [name, position, diameter, radius, debug, visualScaleFactor]);
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
-    // If we have orbitData (which includes the parent's position), use it for positioning
-    // rather than the absolute position from the data
-    if (orbitData) {
-      const parent = new Vector3(...orbitData.parentPosition);
-      // Add a random offset around the parent based on semi-major axis
-      // This creates a more visually appealing arrangement of moons
-      const angle = name.charCodeAt(0) * 0.5; // Use name to create a consistent angle
-      return new Vector3(
-        parent.x + Math.cos(angle) * orbitData.semiMajorAxis,
-        parent.y + Math.sin(angle) * orbitData.semiMajorAxis,
-        parent.z
-      );
-    }
-    // Fall back to absolute position if no orbit data
     if (position) return new Vector3(...position);
-    
+    if (orbitData) {
+      // Instead of placing only on x-axis, distribute around the parent
+      // using inclination and rotation to determine the direction
+      const parent = new Vector3(...orbitData.parentPosition);
+      const inclination = orbitData.inclination || 0;
+      const rotation = orbitData.rotation || 0;
+      
+      // Convert degrees to radians
+      const inclinationRad = inclination * (Math.PI / 180);
+      const rotationRad = rotation * (Math.PI / 180);
+      
+      // Calculate position using spherical coordinates
+      const distance = orbitData.semiMajorAxis * SCALE_FACTOR;
+      
+      // Calculate x, y, z components
+      const x = parent.x + distance * Math.cos(rotationRad) * Math.cos(inclinationRad);
+      const y = parent.y + distance * Math.sin(rotationRad) * Math.cos(inclinationRad);
+      const z = parent.z + distance * Math.sin(inclinationRad);
+      
+      if (debug) {
+        console.debug(`Moon ${name} orbital calculation:`, {
+          parent: parent.toArray(),
+          distance,
+          inclination,
+          rotation,
+          calculatedPosition: [x, y, z]
+        });
+      }
+      
+      return new Vector3(x, y, z);
+    }
     return new Vector3(0, 0, 0);
-  }, [position, orbitData, name]);
+  }, [position, orbitData, debug, name]);
   
   // Animation for rotation
   useFrame(({ clock }) => {

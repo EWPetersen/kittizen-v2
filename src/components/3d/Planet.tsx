@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sphere, Html } from '@react-three/drei';
 import { Color, Vector3, ShaderMaterial, MeshStandardMaterial } from 'three';
-import { CelestialType, SCALE_FACTOR, LABEL_OFFSET } from './constants';
+import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, VISUAL_SCALE_FACTORS } from './constants';
 import { OrbitalPath } from './OrbitalPath';
 
 // Vertex shader for atmosphere effect
@@ -48,6 +48,7 @@ interface PlanetProps {
   onDoubleClick?: () => void;
   isSelected?: boolean;
   children?: React.ReactNode;
+  debug?: boolean; // Flag to enable debug rendering
 }
 
 export const Planet: React.FC<PlanetProps> = ({
@@ -62,30 +63,68 @@ export const Planet: React.FC<PlanetProps> = ({
   onClick,
   onDoubleClick,
   isSelected = false,
-  children
+  children,
+  debug = false
 }) => {
   const planetRef = useRef<THREE.Mesh>(null);
   const atmosphereRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
-  // Convert diameter from km to scene units
-  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR; // km to Gm * SCALE_FACTOR
+  // Apply visual scale factor for better visibility
+  const visualScaleFactor = VISUAL_SCALE_FACTORS.PLANET;
+  
+  // Convert diameter from km to scene units, with visual scaling
+  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR * visualScaleFactor;
+  
+  // Log debug info if debug flag is set
+  React.useEffect(() => {
+    if (debug) {
+      console.debug(`Planet ${name}:`, {
+        position,
+        diameter,
+        radius: (diameter / 2) / 1000000 * SCALE_FACTOR, // Actual radius without visual scale
+        visualRadius: radius, // Scaled radius for display
+        visualScaleFactor
+      });
+    }
+  }, [name, position, diameter, radius, debug, visualScaleFactor]);
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
     if (position) return new Vector3(...position);
     if (orbitData) {
-      // For now, just place at semimajor axis distance along x-axis
-      // In real implementation, this would be based on time and orbital parameters
+      // Instead of placing only on x-axis, distribute around the parent
+      // using inclination and rotation to determine the direction
       const parent = new Vector3(...orbitData.parentPosition);
-      return new Vector3(
-        parent.x + orbitData.semiMajorAxis * SCALE_FACTOR,
-        parent.y,
-        parent.z
-      );
+      const inclination = orbitData.inclination || 0;
+      const rotation = orbitData.rotation || 0;
+      
+      // Convert degrees to radians
+      const inclinationRad = inclination * (Math.PI / 180);
+      const rotationRad = rotation * (Math.PI / 180);
+      
+      // Calculate position using spherical coordinates
+      const distance = orbitData.semiMajorAxis * SCALE_FACTOR;
+      
+      // Calculate x, y, z components
+      const x = parent.x + distance * Math.cos(rotationRad) * Math.cos(inclinationRad);
+      const y = parent.y + distance * Math.sin(rotationRad) * Math.cos(inclinationRad);
+      const z = parent.z + distance * Math.sin(inclinationRad);
+      
+      if (debug) {
+        console.debug(`Planet ${name} orbital calculation:`, {
+          parent: parent.toArray(),
+          distance,
+          inclination,
+          rotation,
+          calculatedPosition: [x, y, z]
+        });
+      }
+      
+      return new Vector3(x, y, z);
     }
     return new Vector3(0, 0, 0);
-  }, [position, orbitData]);
+  }, [position, orbitData, debug, name]);
   
   // Animation for rotation
   useFrame(({ clock }) => {

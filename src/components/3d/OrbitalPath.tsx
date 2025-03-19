@@ -7,10 +7,13 @@ import { SCALE_FACTOR } from './constants';
 interface OrbitalPathProps {
   parentPosition?: [number, number, number];
   semiMajorAxis: number;  // in Gm
-  semiMinorAxis?: number; // in Gm, if undefined will use semiMajorAxis for circular orbit
   eccentricity?: number;  // between 0-1, alternative to providing semiMinorAxis
   inclination?: number;   // in degrees
   rotation?: number;      // in degrees, rotation around the normal vector
+  segments?: number;
+  lineColor?: string;
+  lineWidth?: number;
+  visible?: boolean;
   type: CelestialType;
   color?: string;         // override default color
   dashed?: boolean;
@@ -19,64 +22,63 @@ interface OrbitalPathProps {
 export const OrbitalPath: React.FC<OrbitalPathProps> = ({
   parentPosition = [0, 0, 0],
   semiMajorAxis,
-  semiMinorAxis,
   eccentricity = 0,
   inclination = 0,
   rotation = 0,
+  segments = 64,
+  lineColor = '#444455',
+  lineWidth = 0.1,
+  visible = true,
   type,
   color,
   dashed = true
 }) => {
-  // Calculate semi-minor axis if not provided but eccentricity is
-  const calculatedSemiMinorAxis = useMemo(() => {
-    if (semiMinorAxis !== undefined) return semiMinorAxis;
-    if (eccentricity !== undefined) {
-      return semiMajorAxis * Math.sqrt(1 - eccentricity * eccentricity);
-    }
-    return semiMajorAxis; // Circular orbit
-  }, [semiMajorAxis, semiMinorAxis, eccentricity]);
-  
-  // Scale to THREE.js units
-  const scaledSemiMajorAxis = semiMajorAxis * SCALE_FACTOR;
-  const scaledSemiMinorAxis = calculatedSemiMinorAxis * SCALE_FACTOR;
-  
-  // Create elliptical path points
+  // Generate a circle of points
   const points = useMemo(() => {
-    // Create the basic ellipse in the XY plane
-    const curve = new EllipseCurve(
-      0, 0,                        // center
-      scaledSemiMajorAxis, scaledSemiMinorAxis, // x radius, y radius
-      0, 2 * Math.PI,              // start angle, end angle
-      false,                       // clockwise
-      rotation * (Math.PI / 180)   // rotation
-    );
+    const circlePoints: Vector3[] = [];
+    const parentPos = new Vector3(...parentPosition);
     
-    // Get points along the curve
-    const basePoints = curve.getPoints(ORBIT_SEGMENTS);
-    
-    // Convert to 3D points and apply inclination
+    // Convert angles from degrees to radians
     const inclinationRad = inclination * (Math.PI / 180);
-    const points3D = basePoints.map(point => {
-      // Apply inclination rotation around X axis
-      const y = point.y * Math.cos(inclinationRad);
-      const z = point.y * Math.sin(inclinationRad);
-      
-      // Create new 3D point
-      return new Vector3(
-        point.x + parentPosition[0],
-        y + parentPosition[1],
-        z + parentPosition[2]
-      );
-    });
+    const rotationRad = rotation * (Math.PI / 180);
     
-    return points3D;
-  }, [
-    scaledSemiMajorAxis,
-    scaledSemiMinorAxis,
-    rotation,
-    inclination,
-    parentPosition
-  ]);
+    // Create orbit points
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      
+      // Calculate point on an ellipse in 2D plane
+      const radius = semiMajorAxis * (1 - eccentricity * eccentricity) / (1 + eccentricity * Math.cos(angle));
+      
+      // Calculate 3D position (in orbital plane)
+      let x = radius * Math.cos(angle);
+      let y = radius * Math.sin(angle);
+      let z = 0;
+      
+      // Apply inclination (tilt the orbital plane)
+      const tempY = y;
+      y = y * Math.cos(inclinationRad) - z * Math.sin(inclinationRad);
+      z = tempY * Math.sin(inclinationRad) + z * Math.cos(inclinationRad);
+      
+      // Apply rotation (rotate the orbital plane around z-axis)
+      const tempX = x;
+      x = x * Math.cos(rotationRad) - y * Math.sin(rotationRad);
+      y = tempX * Math.sin(rotationRad) + y * Math.cos(rotationRad);
+      
+      // Apply scale factor to get correct scene units
+      x *= SCALE_FACTOR;
+      y *= SCALE_FACTOR;
+      z *= SCALE_FACTOR;
+      
+      // Add parent position
+      circlePoints.push(new Vector3(
+        parentPos.x + x,
+        parentPos.y + y,
+        parentPos.z + z
+      ));
+    }
+    
+    return circlePoints;
+  }, [parentPosition, semiMajorAxis, eccentricity, inclination, rotation, segments]);
   
   // Get color based on celestial type or override
   const pathColor = color || ORBIT_COLOR[type] || '#ffffff';
