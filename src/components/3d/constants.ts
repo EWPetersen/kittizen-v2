@@ -1,5 +1,16 @@
 // Constants for astronomical scale - 1 unit = 1 Gm (gigameter)
-export const SCALE_FACTOR = 1; // 1 unit = 1 Gm 
+export const SCALE_FACTOR = 1; // 1 unit = 1 Gm
+
+// Visual scaling to make objects visible at system scale
+// These values artificially inflate the size of objects to make them visible
+export const VISUAL_SCALE_FACTORS = {
+  STAR: 5,        // 5x actual size for stars (increased from 0.5x)
+  PLANET: 75,      // 75x actual size for planets (increased from 50x)
+  MOON: 150,       // 150x actual size for moons (increased from 100x)
+  STATION: 500,    // 500x actual size for stations
+  JUMP_POINT: 200, // 200x actual size for jump points
+  LAGRANGE: 200    // 200x actual size for lagrange points
+};
 
 // Celestial object types
 export enum CelestialType {

@@ -254,25 +254,27 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
       let adaptiveZoomSpeed;
       
       if (distanceToTarget > 10) { // > 10 Gm - fast zoom for system scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.1;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.15;
       } else if (distanceToTarget > 1) { // 1-10 Gm - medium zoom for planet scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.2;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.25;
       } else if (distanceToTarget > 0.1) { // 0.1-1 Gm - slower zoom for moon scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.3;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.35;
       } else if (distanceToTarget > 0.01) { // 0.01-0.1 Gm - precise zoom for station scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.4;
-      } else { // < 0.01 Gm - very precise zoom for close-up
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.5;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.45;
+      } else if (distanceToTarget > 0.001) { // 0.001-0.01 Gm - very precise zoom for surface details
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.55;
+      } else { // < 0.001 Gm - extremely precise zoom for close-up details
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.75;
       }
       
       // Apply minimum and maximum zoom speed limits
-      adaptiveZoomSpeed = Math.max(0.0001, Math.min(10, adaptiveZoomSpeed));
+      adaptiveZoomSpeed = Math.max(0.00001, Math.min(20, adaptiveZoomSpeed));
       
       if (zoomLevel < 0) {
-        // Zoom in
-        cam.position.sub(zoomDirection.multiplyScalar(adaptiveZoomSpeed));
+        // Zoom in - more aggressive zooming in
+        cam.position.sub(zoomDirection.multiplyScalar(adaptiveZoomSpeed * 1.5));
       } else if (zoomLevel > 0) {
-        // Zoom out
+        // Zoom out - standard zooming out
         cam.position.add(zoomDirection.multiplyScalar(adaptiveZoomSpeed));
       }
     }
@@ -323,8 +325,7 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
       // Adaptive near plane calculation:
       // - At large distances, use larger near plane to avoid precision issues
       // - At close distances, use smaller near plane to see details
-      // - Near plane should never be less than 0.000001 Gm (1 meter)
-      // - Formula: near = distance * distanceFactor, but never less than min value
+      // - Near plane should never be less than 0.0000001 Gm (100 meters)
       let nearPlaneDistance;
       
       if (distance > 10) { // System scale (> 10 Gm)
@@ -335,30 +336,37 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
         nearPlaneDistance = distance * 0.0001; // 0.01% of distance
       } else if (distance > 0.01) { // Station scale (0.01-0.1 Gm)
         nearPlaneDistance = distance * 0.00001; // 0.001% of distance
-      } else { // Close-up scale (< 0.01 Gm)
-        nearPlaneDistance = 0.000001; // 1 meter (fixed minimum)
+      } else if (distance > 0.001) { // Surface detail scale (0.001-0.01 Gm)
+        nearPlaneDistance = distance * 0.000001; // 0.0001% of distance
+      } else { // Extreme close-up scale (< 0.001 Gm)
+        nearPlaneDistance = 0.0000001; // 100 meters (fixed minimum)
       }
       
-      // Apply the calculated near plane, but never less than 1 meter (0.000001 Gm)
-      cam.near = Math.max(0.000001, nearPlaneDistance);
+      // Apply the calculated near plane, but never less than 100 meters (0.0000001 Gm)
+      cam.near = Math.max(0.0000001, nearPlaneDistance);
       
       // Far plane should cover the entire star system, but can be adjusted based on focus
       if (distance > 50) { // Very far away (system view)
         cam.far = 200; // See entire system plus some margin
       } else if (distance > 10) { // Far away (between planets)
         cam.far = 150; // See most of the system
-      } else { // Closer views
-        cam.far = Math.max(100, distance * 10); // At least 100 Gm or 10x current distance
+      } else if (distance > 1) { // Planet-scale distances
+        cam.far = Math.max(100, distance * 15); // At least 100 Gm or 15x current distance
+      } else { // Close-up views
+        cam.far = Math.max(50, distance * 20); // At least 50 Gm or 20x current distance
       }
       
       // Log camera parameters when debugging
       if (debugCounter % 60 === 0) { // Log every 60 frames to avoid spam
         console.debug('Camera planes updated:', {
-          distance: distance.toFixed(6) + ' Gm',
-          near: cam.near.toFixed(6) + ' Gm',
+          distance: distance.toFixed(8) + ' Gm',
+          near: cam.near.toFixed(8) + ' Gm',
           far: cam.far.toFixed(2) + ' Gm',
           distanceMeters: (distance * 1000000000).toFixed(0) + ' m',
-          nearMeters: (cam.near * 1000000000).toFixed(0) + ' m'
+          nearMeters: (cam.near * 1000000000).toFixed(0) + ' m',
+          objectName: focusTarget.objectName,
+          objectType: focusTarget.objectType,
+          objectSize: focusTarget.objectSize
         });
       }
       
@@ -453,11 +461,11 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
     enablePan: true,
     enableZoom: true,
     enableRotate: true,
-    zoomSpeed: 1.0,
+    zoomSpeed: 2.5, // Increased zoom speed for astronomical scale
     panSpeed: 1.0,
     rotateSpeed: 0.8,
     maxDistance: 120, // 120 Gm - maximum zoom out
-    minDistance: 0.000001, // 1000 meters (0.000001 Gm) - minimum zoom in
+    minDistance: 0.0000001, // 100 meters (0.0000001 Gm) - minimum zoom in (lowered for closer zooming)
     maxPolarAngle: cameraMode === CameraMode.OVERVIEW ? Math.PI / 2 - 0.1 : Math.PI, // Prevent going below horizon in overview
     dampingFactor: 0.05, // Add smooth damping effect
     screenSpacePanning: true, // More intuitive panning
