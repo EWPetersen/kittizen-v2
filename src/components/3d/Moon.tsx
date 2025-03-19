@@ -62,7 +62,13 @@ export const Moon: React.FC<MoonProps> = ({
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
-    if (position) return new Vector3(...position);
+    if (position) {
+      if (debug) {
+        console.debug(`Moon ${name} using explicit position:`, position);
+      }
+      return new Vector3(...position);
+    }
+    
     if (orbitData) {
       // Instead of placing only on x-axis, distribute around the parent
       // using inclination and rotation to determine the direction
@@ -85,14 +91,22 @@ export const Moon: React.FC<MoonProps> = ({
       if (debug) {
         console.debug(`Moon ${name} orbital calculation:`, {
           parent: parent.toArray(),
-          distance,
+          parentName: "Unknown", // Add parent name if available
+          distance: distance.toFixed(3),
+          rawDistance: orbitData.semiMajorAxis,
+          scaleFactor: SCALE_FACTOR,
           inclination,
           rotation,
-          calculatedPosition: [x, y, z]
+          calculatedPosition: [x, y, z],
+          orbitData
         });
       }
       
       return new Vector3(x, y, z);
+    }
+    
+    if (debug) {
+      console.warn(`Moon ${name} has no position or orbit data`);
     }
     return new Vector3(0, 0, 0);
   }, [position, orbitData, debug, name]);

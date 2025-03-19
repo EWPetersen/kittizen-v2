@@ -406,6 +406,7 @@ interface ProcessedObject {
     semiMajorAxis: number;
     eccentricity?: number;
     inclination?: number;
+    rotation?: number;
   };
   atmosphereColor?: string;
   atmosphereIntensity?: number;
@@ -517,14 +518,32 @@ class SystemDataService {
     const orbit = parentId && this.processedData[parentId] ? (() => {
       const parent = this.processedData[parentId];
       const parentPos = parent.position;
-      const distanceToParent = position.distanceTo(parentPos);
+      
+      // Calculate the vector from parent to child
+      const childVec = new Vector3().subVectors(position, parentPos);
+      const distanceToParent = childVec.length();
+      
+      // Calculate inclination (angle from x-y plane)
+      const xy = Math.sqrt(childVec.x * childVec.x + childVec.y * childVec.y);
+      const inclination = Math.atan2(childVec.z, xy) * (180 / Math.PI);
+      
+      // Calculate rotation (angle in x-y plane)
+      const rotation = Math.atan2(childVec.y, childVec.x) * (180 / Math.PI);
+      
+      console.debug(`Orbit data for ${name} (child of ${this.processedData[parentId].name}):`, {
+        distance: distanceToParent,
+        inclination,
+        rotation,
+        childPosition: position.toArray(),
+        parentPosition: parentPos.toArray()
+      });
       
       return {
         parentPosition: parentPos,
         semiMajorAxis: distanceToParent,
-        // We're using simplified orbital parameters since we don't have full Keplerian elements
-        eccentricity: 0.01, // Low default eccentricity
-        inclination: Math.random() * 5 // Random inclination between 0-5 degrees
+        eccentricity: 0.01,
+        inclination,
+        rotation
       };
     })() : undefined;
     
@@ -677,6 +696,20 @@ class SystemDataService {
       obj => obj.name.toLowerCase() === lowerName
     );
     return match || null;
+  }
+  
+  /**
+   * Force reprocessing of the data
+   */
+  reprocessData(): void {
+    console.log('Reprocessing system data...');
+    // Clear existing data
+    this.processedData = {};
+    this.rootObject = null;
+    
+    // Process data again
+    this.processSystemData();
+    this.logDebugInfo();
   }
 }
 

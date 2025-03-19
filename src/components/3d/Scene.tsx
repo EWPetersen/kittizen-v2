@@ -63,13 +63,6 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
     }
   }, [camera, debug]);
 
-  // Add debug call to systemDataService
-  useEffect(() => {
-    if (debug) {
-      systemDataService.logDebugInfo();
-    }
-  }, [debug]);
-
   // Handle object selection
   const handleSelectObject = useCallback((id: string) => {
     const newSelected = id === selectedObject ? null : id;
@@ -112,6 +105,27 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
     }
   }, [handleSelectObject, debug]);
   
+  // Force reprocessing of system data on initial load
+  useEffect(() => {
+    // Force reprocessing of system data
+    systemDataService.reprocessData();
+    
+    // Debug output
+    if (debug) {
+      console.log('Scene initialized');
+      
+      // Output camera details
+      const perspCamera = camera as PerspectiveCamera;
+      console.debug('Camera initial settings:', {
+        position: camera.position.toArray(),
+        lookAt: new Vector3(0, 0, 0).toArray(),
+        fov: perspCamera.fov || 'N/A',
+        near: perspCamera.near || 'N/A',
+        far: perspCamera.far || 'N/A'
+      });
+    }
+  }, [camera, debug]);
+
   // Get all objects from the system data service
   const systemData = systemDataService.getAllObjects();
   const rootObject = systemDataService.getRootObject();
@@ -135,30 +149,6 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
   const moons = systemDataService.getObjectsByType(CelestialType.MOON);
   const stations = systemDataService.getObjectsByType(CelestialType.STATION);
   const jumpPoints = systemDataService.getObjectsByType(CelestialType.JUMP_POINT);
-  
-  // Debug parent objects
-  if (debug) {
-    moons.forEach(moon => {
-      if (moon.parent) {
-        const parentObj = systemData[moon.parent];
-        if (parentObj) {
-          console.debug(`Moon ${moon.name} - parent: ${parentObj.name}`, {
-            moonPosition: {
-              x: moon.position.x.toFixed(4),
-              y: moon.position.y.toFixed(4),
-              z: moon.position.z.toFixed(4)
-            },
-            parentPosition: {
-              x: parentObj.position.x.toFixed(4),
-              y: parentObj.position.y.toFixed(4),
-              z: parentObj.position.z.toFixed(4)
-            },
-            distance: moon.position.distanceTo(parentObj.position).toFixed(4)
-          });
-        }
-      }
-    });
-  }
   
   if (!rootObject) {
     return <group ref={sceneRef}><mesh><boxGeometry /></mesh></group>;
@@ -233,24 +223,43 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
         />
       ))}
       
-      {/* Moons */}
+      {/* Render all moons */}
       {moons.map(moon => {
-        // Get the parent object to use for proper positioning
-        const parentObj = moon.parent ? systemData[moon.parent] : null;
-        const orbitData = moon.orbit && parentObj ? {
-          parentPosition: [parentObj.position.x, parentObj.position.y, parentObj.position.z] as [number, number, number],
-          semiMajorAxis: moon.orbit.semiMajorAxis,
-          eccentricity: moon.orbit.eccentricity || 0.01,
-          inclination: moon.orbit.inclination || 0,
-          rotation: 0
-        } : undefined;
+        const parent = moon.parent ? systemData[moon.parent] : null;
+        
+        // Skip rendering if parent is not found (shouldn't happen in practice)
+        if (moon.parent && !parent) {
+          console.warn(`Moon ${moon.name} references parent ${moon.parent} which was not found`);
+          return null;
+        }
+        
+        if (debug) {
+          console.debug(`Rendering moon ${moon.name}:`, {
+            position: moon.position.toArray(),
+            parent: parent?.name || 'None',
+            parentPosition: parent?.position.toArray() || 'N/A',
+            orbit: moon.orbit,
+            hasOwnPosition: !!moon.position,
+            hasOrbit: !!moon.orbit
+          });
+        }
         
         return (
           <Moon
             key={moon.id}
-            position={[moon.position.x, moon.position.y, moon.position.z]}
-            orbitData={orbitData}
             name={moon.name}
+            position={moon.position ? [moon.position.x, moon.position.y, moon.position.z] : undefined}
+            orbitData={moon.orbit ? {
+              parentPosition: [
+                moon.orbit.parentPosition.x,
+                moon.orbit.parentPosition.y,
+                moon.orbit.parentPosition.z
+              ],
+              semiMajorAxis: moon.orbit.semiMajorAxis,
+              eccentricity: moon.orbit.eccentricity,
+              inclination: moon.orbit.inclination,
+              rotation: moon.orbit.rotation
+            } : undefined}
             diameter={moon.size}
             color={moon.color}
             onClick={() => handleSelectObject(moon.id)}
