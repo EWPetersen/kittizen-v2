@@ -6,7 +6,8 @@ export { Canvas } from './Canvas';
 export { Scene } from './Scene';
 export { Star } from './Star';
 export { Grid } from './Grid';
-export { CameraManager } from './StantonSystem';
+export { CameraController, CameraMode } from './CameraController';
+export { default as CameraControls } from './CameraControls';
 
 // Export constants and utilities
 export { SCALE_FACTOR } from './constants';
