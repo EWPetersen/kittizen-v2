@@ -3,9 +3,10 @@ import { useAuth } from '../contexts/AuthContext';
 
 interface NavBarProps {
   onToggleAlerts: () => void;
+  onToggleStats?: () => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ onToggleAlerts }) => {
+const NavBar: React.FC<NavBarProps> = ({ onToggleAlerts, onToggleStats }) => {
   const { user, login, logout, anonymousLogin } = useAuth();
   const [showLoginForm, setShowLoginForm] = React.useState(false);
   const [email, setEmail] = React.useState('');
@@ -46,6 +47,15 @@ const NavBar: React.FC<NavBarProps> = ({ onToggleAlerts }) => {
           >
             Alerts
           </button>
+          
+          {onToggleStats && (
+            <button
+              onClick={onToggleStats}
+              className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-700 text-white font-medium"
+            >
+              Stats
+            </button>
+          )}
           
           {user ? (
             <div className="flex items-center space-x-2">
