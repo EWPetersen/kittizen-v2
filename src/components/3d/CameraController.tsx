@@ -131,8 +131,34 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
         far: cam.far,
         fov: cam.fov
       });
+      
+      // Add keyboard listener for debug key
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'd') {
+          const distance = focusTarget ? cam.position.distanceTo(focusTarget.position) : 'N/A';
+          console.log('%c CAMERA DEBUG INFO ', 'background: #003366; color: #88CCFF; font-weight: bold; padding: 2px 5px;');
+          console.log('Camera position:', cam.position.toArray().map(v => v.toFixed(6)).join(', '));
+          console.log('Look target:', focusTarget ? focusTarget.position.toArray().map(v => v.toFixed(6)).join(', ') : 'None');
+          console.log('Distance to target:', typeof distance === 'number' ? `${distance.toFixed(8)} Gm (${(distance * 1000000000).toFixed(0)} meters)` : distance);
+          console.log('Near plane:', `${cam.near.toFixed(8)} Gm (${(cam.near * 1000000000).toFixed(0)} meters)`);
+          console.log('Far plane:', `${cam.far.toFixed(2)} Gm (${(cam.far * 1000000000).toFixed(0)} meters)`);
+          console.log('Field of view:', cam.fov.toFixed(2) + '°');
+          console.log('Zoom level:', zoomLevel);
+          console.log('Camera mode:', cameraMode);
+          console.log('Focused object:', focusTarget ? `${focusTarget.objectName} (${focusTarget.objectType})` : 'None');
+          console.log('Object size:', focusTarget ? `${focusTarget.objectSize.toFixed(4)} Gm (${(focusTarget.objectSize * 1000000000).toFixed(0)} meters)` : 'N/A');
+          
+          if (controlsRef.current) {
+            console.log('Controls min distance:', controlsRef.current.minDistance);
+            console.log('Controls max distance:', controlsRef.current.maxDistance);
+          }
+        }
+      };
+      
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
     }
-  }, []);
+  }, [cameraMode, focusTarget, zoomLevel]);
   
   // Handle focus change
   const changeFocus = useCallback((newTarget: FocusTarget | null, transitionTime = 1.5) => {
@@ -250,29 +276,29 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
       
       // Logarithmic zoom speed that scales with distance
       // Fast at large distances, precise at close distances
-      const baseZoomSpeed = 5 * delta;
+      const baseZoomSpeed = 10 * delta; // Increased base speed
       let adaptiveZoomSpeed;
       
       if (distanceToTarget > 10) { // > 10 Gm - fast zoom for system scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.15;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.2;
       } else if (distanceToTarget > 1) { // 1-10 Gm - medium zoom for planet scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.25;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.3;
       } else if (distanceToTarget > 0.1) { // 0.1-1 Gm - slower zoom for moon scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.35;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.4;
       } else if (distanceToTarget > 0.01) { // 0.01-0.1 Gm - precise zoom for station scale
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.45;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.6;
       } else if (distanceToTarget > 0.001) { // 0.001-0.01 Gm - very precise zoom for surface details
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.55;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.8;
       } else { // < 0.001 Gm - extremely precise zoom for close-up details
-        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 0.75;
+        adaptiveZoomSpeed = baseZoomSpeed * distanceToTarget * 1.2;
       }
       
       // Apply minimum and maximum zoom speed limits
-      adaptiveZoomSpeed = Math.max(0.00001, Math.min(20, adaptiveZoomSpeed));
+      adaptiveZoomSpeed = Math.max(0.000001, Math.min(40, adaptiveZoomSpeed));
       
       if (zoomLevel < 0) {
-        // Zoom in - more aggressive zooming in
-        cam.position.sub(zoomDirection.multiplyScalar(adaptiveZoomSpeed * 1.5));
+        // Zoom in - much more aggressive zooming in
+        cam.position.sub(zoomDirection.multiplyScalar(adaptiveZoomSpeed * 2.0));
       } else if (zoomLevel > 0) {
         // Zoom out - standard zooming out
         cam.position.add(zoomDirection.multiplyScalar(adaptiveZoomSpeed));
@@ -461,16 +487,41 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
     enablePan: true,
     enableZoom: true,
     enableRotate: true,
-    zoomSpeed: 2.5, // Increased zoom speed for astronomical scale
+    zoomSpeed: 4.0, // Dramatically increased zoom speed for astronomical scale
     panSpeed: 1.0,
     rotateSpeed: 0.8,
     maxDistance: 120, // 120 Gm - maximum zoom out
-    minDistance: 0.0000001, // 100 meters (0.0000001 Gm) - minimum zoom in (lowered for closer zooming)
+    minDistance: 0.00000001, // 10 meters (0.00000001 Gm) - extremely close zoom in 
     maxPolarAngle: cameraMode === CameraMode.OVERVIEW ? Math.PI / 2 - 0.1 : Math.PI, // Prevent going below horizon in overview
     dampingFactor: 0.05, // Add smooth damping effect
     screenSpacePanning: true, // More intuitive panning
     ref: controlsRef
   };
+  
+  // Add keyboard controls for zoom
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '+' || e.key === '=') {
+        setZoomLevel(-1); // Zoom in
+      } else if (e.key === '-' || e.key === '_') {
+        setZoomLevel(1); // Zoom out
+      }
+    };
+    
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (['+', '=', '-', '_'].includes(e.key)) {
+        setZoomLevel(0); // Stop zooming
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
   
   return (
     <>

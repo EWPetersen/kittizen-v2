@@ -4,12 +4,12 @@ export const SCALE_FACTOR = 1; // 1 unit = 1 Gm
 // Visual scaling to make objects visible at system scale
 // These values artificially inflate the size of objects to make them visible
 export const VISUAL_SCALE_FACTORS = {
-  STAR: 5,        // 5x actual size for stars (increased from 0.5x)
-  PLANET: 75,      // 75x actual size for planets (increased from 50x)
-  MOON: 150,       // 150x actual size for moons (increased from 100x)
-  STATION: 500,    // 500x actual size for stations
-  JUMP_POINT: 200, // 200x actual size for jump points
-  LAGRANGE: 200    // 200x actual size for lagrange points
+  STAR: 20,        // 20x actual size for stars (dramatically increased)
+  PLANET: 200,     // 200x actual size for planets (dramatically increased)
+  MOON: 400,       // 400x actual size for moons (dramatically increased)
+  STATION: 1000,   // 1000x actual size for stations (increased)
+  JUMP_POINT: 500, // 500x actual size for jump points (increased)
+  LAGRANGE: 500    // 500x actual size for lagrange points (increased)
 };
 
 // Celestial object types
