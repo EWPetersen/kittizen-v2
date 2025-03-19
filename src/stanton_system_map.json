@@ -1,0 +1,2891 @@
+{
+  "systemName": "Stanton",
+  "metadata": {
+    "Version": "1.0",
+    "Generator": "SCU Parser v2",
+    "BuildVersion": "9605532",
+    "ScraperVersion": "2.0",
+    "ScrapeTimestamp": "2025-03-18T21:53:59.960427",
+    "EnhancedBodies": "17"
+  },
+  "root": {
+    "name": "OOC_Stanton",
+    "label": "Stanton",
+    "position": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "type": "star",
+    "diameter": 696000000.0,
+    "atmosphericHeight": 1000.0,
+    "color": "#F9D71C",
+    "description": "Stanton is a main sequence star of spectral type G. It is the central star of the Stanton system.",
+    "children": [
+      {
+        "name": "OOC_Stanton_4_Microtech",
+        "label": "microTech",
+        "position": {
+          "x": 22462085252.484795,
+          "y": 37185744964.8301,
+          "z": 0.0
+        },
+        "type": "planet",
+        "parent": "OOC_Stanton",
+        "diameter": 1000000.0,
+        "atmosphericHeight": 100000.0,
+        "qtHeight": 10875.0,
+        "color": "#EDF5FA",
+        "description": "microTech is a frigid planet covered primarily in ice and snow, home to microTech corporation, known for their high-tech electronics and computing hardware.",
+        "children": [
+          {
+            "name": "OOC_Stanton_4b_Clio",
+            "label": "Clio",
+            "position": {
+              "x": -22476728220.510056,
+              "y": -37091020074.37551,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_4_Microtech",
+            "diameter": 287000.0,
+            "atmosphericHeight": 18000.0,
+            "qtHeight": 1700.0,
+            "color": "#B09B73",
+            "description": "A moon of microTech with tan-colored terrain and a thin atmosphere. Contains several small research outposts studying its unusual geological formations.",
+            "children": [
+              {
+                "name": "OOC_Stanton4b_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 14393704.617794037,
+                  "y": -94214728.2214508,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton4b_Rayari",
+                "label": "Rayari Anvik Research Outpost",
+                "position": {
+                  "x": 200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton4b_Rayari_Kaltag",
+                "label": "Rayari Kaltag Research Outpost",
+                "position": {
+                  "x": -180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton4b_Rayari_McGrath",
+                "label": "Rayari McGrath Research Outpost",
+                "position": {
+                  "x": 180000.0,
+                  "y": -200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton4b_Nuiqsut",
+                "label": "Nuiqsut Aid Shelter",
+                "position": {
+                  "x": -200000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -22476728220.510056,
+                  "y": -37091020074.37551,
+                  "z": 215250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -22476728220.510056,
+                  "y": -37091020074.37551,
+                  "z": -215250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -22476512970.510056,
+                  "y": -37091020074.37551,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -22476943470.510056,
+                  "y": -37091020074.37551,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -22476728220.510056,
+                  "y": -37090804824.37551,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              },
+              {
+                "name": "OOC_Stanton_4b_Clio_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -22476728220.510056,
+                  "y": -37091235324.37551,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4b_Clio"
+              }
+            ],
+            "visualRadius": 143500.0,
+            "atmosphereRadius": 161500.0,
+            "qtRadius": 145200.0
+          },
+          {
+            "name": "OOC_Stanton_4c_Euterpe",
+            "label": "Euterpe",
+            "position": {
+              "x": -22488109735.701077,
+              "y": -37081123564.67918,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_4_Microtech",
+            "diameter": 270000.0,
+            "atmosphericHeight": 15000.0,
+            "qtHeight": 1600.0,
+            "color": "#9EB3BB",
+            "description": "A small, bluish-gray moon of microTech with a thin atmosphere. Known for its extreme cold and icy surface, with several abandoned research facilities.",
+            "children": [
+              {
+                "name": "OOC_Stanton4c_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 26456267.26488495,
+                  "y": -104413366.32805634,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton4c_Rayari",
+                "label": "Rayari Kaltag Research Outpost",
+                "position": {
+                  "x": 180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton4c_Rayari_Cantwell",
+                "label": "Rayari Cantwell Research Outpost",
+                "position": {
+                  "x": -200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton4c_Rayari_Anvik",
+                "label": "Rayari Anvik Research Outpost",
+                "position": {
+                  "x": 200000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton4c_Bud's",
+                "label": "Bud's Growery",
+                "position": {
+                  "x": -180000.0,
+                  "y": -200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -22488109735.701077,
+                  "y": -37081123564.67918,
+                  "z": 202500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -22488109735.701077,
+                  "y": -37081123564.67918,
+                  "z": -202500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -22487907235.701077,
+                  "y": -37081123564.67918,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -22488312235.701077,
+                  "y": -37081123564.67918,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -22488109735.701077,
+                  "y": -37080921064.67918,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              },
+              {
+                "name": "OOC_Stanton_4c_Euterpe_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -22488109735.701077,
+                  "y": -37081326064.67918,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4c_Euterpe"
+              }
+            ],
+            "visualRadius": 135000.0,
+            "atmosphereRadius": 150000.0,
+            "qtRadius": 136600.0
+          },
+          {
+            "name": "OOC_Stanton_4a_Calliope",
+            "label": "Calliope",
+            "position": {
+              "x": -22398369308.247227,
+              "y": -37168840679.01129,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_4_Microtech",
+            "diameter": 310000.0,
+            "atmosphericHeight": 22000.0,
+            "qtHeight": 2000.0,
+            "color": "#B45964",
+            "description": "A reddish moon orbiting microTech with a thin atmosphere. Its surface features rugged terrain and is subject to frequent meteorite impacts.",
+            "children": [
+              {
+                "name": "OOC_Stanton4a_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": -63457438.51651001,
+                  "y": -16430092.504821777,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton4a_Rayari",
+                "label": "Rayari Deltana Research Outpost",
+                "position": {
+                  "x": 180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton4a_Rayari_Anvik",
+                "label": "Rayari Anvik Research Outpost",
+                "position": {
+                  "x": -200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton4a_Rayari_Cantwell",
+                "label": "Rayari Cantwell Research Outpost",
+                "position": {
+                  "x": 200000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton4a_Glacio",
+                "label": "Glacio Hostel",
+                "position": {
+                  "x": -180000.0,
+                  "y": -200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -22398369308.247227,
+                  "y": -37168840679.01129,
+                  "z": 232500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -22398369308.247227,
+                  "y": -37168840679.01129,
+                  "z": -232500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -22398136808.247227,
+                  "y": -37168840679.01129,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -22398601808.247227,
+                  "y": -37168840679.01129,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -22398369308.247227,
+                  "y": -37168608179.01129,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              },
+              {
+                "name": "OOC_Stanton_4a_Calliope_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -22398369308.247227,
+                  "y": -37169073179.01129,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_4a_Calliope"
+              }
+            ],
+            "visualRadius": 155000.0,
+            "atmosphereRadius": 177000.0,
+            "qtRadius": 157000.0
+          },
+          {
+            "name": "OOC_Stanton4_CommArray",
+            "label": "Comm Array",
+            "position": {
+              "x": -22463480439.512455,
+              "y": -37187712709.36791,
+              "z": 24000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_PortTressler",
+            "label": "Port Tressler",
+            "position": {
+              "x": 1700000.0,
+              "y": 1400000.0,
+              "z": 450000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_NewBabbage",
+            "label": "New Babbage",
+            "position": {
+              "x": 0.0,
+              "y": 1300000.0,
+              "z": 0.0
+            },
+            "type": "city",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_Shubin_SMO",
+            "label": "Shubin Mining Facility SMO-18",
+            "position": {
+              "x": -1200000.0,
+              "y": -800000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_Outpost_1",
+            "label": "Microtech Outpost 54",
+            "position": {
+              "x": 1300000.0,
+              "y": -1200000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_Outpost_2",
+            "label": "Microtech Research Facility MT-1",
+            "position": {
+              "x": -1400000.0,
+              "y": 1100000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_Outpost_3",
+            "label": "Microtech Research Facility MT-2",
+            "position": {
+              "x": 1100000.0,
+              "y": 1400000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM1",
+            "label": "OM-1",
+            "position": {
+              "x": 22462085252.484795,
+              "y": 37185744964.8301,
+              "z": 750000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM2",
+            "label": "OM-2",
+            "position": {
+              "x": 22462085252.484795,
+              "y": 37185744964.8301,
+              "z": -750000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM3",
+            "label": "OM-3",
+            "position": {
+              "x": 22462835252.484795,
+              "y": 37185744964.8301,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM4",
+            "label": "OM-4",
+            "position": {
+              "x": 22461335252.484795,
+              "y": 37185744964.8301,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM5",
+            "label": "OM-5",
+            "position": {
+              "x": 22462085252.484795,
+              "y": 37186494964.8301,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton_4_Microtech_OM6",
+            "label": "OM-6",
+            "position": {
+              "x": 22462085252.484795,
+              "y": 37184994964.8301,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_4_Microtech"
+          },
+          {
+            "name": "OOC_Stanton4_L2",
+            "label": "MIC L2",
+            "position": {
+              "x": 24708827153.475586,
+              "y": 40905202459.222755,
+              "z": -0.050088
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_4_Microtech",
+            "children": [
+              {
+                "name": "OOC_MIC_L2_Station",
+                "label": "MIC-L2 Faithful Dream Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton4_L2"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton4_L5",
+            "label": "MIC L5",
+            "position": {
+              "x": 43435204288.21857,
+              "y": -851406955.90843,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_4_Microtech",
+            "children": [
+              {
+                "name": "OOC_MIC_L5_Station",
+                "label": "MIC-L5 Crystal Winds Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton4_L5"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton4_L1",
+            "label": "MIC L1",
+            "position": {
+              "x": 20215824238.186035,
+              "y": 33467065007.614746,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_4_Microtech",
+            "children": [
+              {
+                "name": "OOC_MIC_L1_Station",
+                "label": "MIC-L1 Shallow Frontier Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton4_L1"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton4_L4",
+            "label": "MIC L4",
+            "position": {
+              "x": -20971933230.165882,
+              "y": 38045504032.01936,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_4_Microtech",
+            "children": [
+              {
+                "name": "OOC_MIC_L4_Station",
+                "label": "MIC-L4 Shallow Fields Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton4_L4"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton4_L3",
+            "label": "MIC L3",
+            "position": {
+              "x": -22457170265.786125,
+              "y": -37187612395.6401,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_4_Microtech",
+            "children": [
+              {
+                "name": "OOC_MIC_L3_Station",
+                "label": "MIC-L3 Glorious Vista Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton4_L3"
+              }
+            ]
+          }
+        ],
+        "visualRadius": 500000.0,
+        "atmosphereRadius": 600000.0,
+        "qtRadius": 510875.0
+      },
+      {
+        "name": "OOC_Stanton_1_Hurston",
+        "label": "Hurston",
+        "position": {
+          "x": 12850457093.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "type": "planet",
+        "parent": "OOC_Stanton",
+        "diameter": 2000000.0,
+        "atmosphericHeight": 100000.0,
+        "qtHeight": 8900.0,
+        "color": "#9B4E1F",
+        "description": "A super-Earth owned by Hurston Dynamics, heavily industrialized and exploited for its natural resources. The planet suffers from severe pollution and has large swathes of wasteland.",
+        "children": [
+          {
+            "name": "OOC_Stanton_1a_Ariel",
+            "label": "Ariel",
+            "position": {
+              "x": -12808240877.13918,
+              "y": -31476128.840109,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_1_Hurston",
+            "diameter": 327000.0,
+            "atmosphericHeight": 25000.0,
+            "qtHeight": 2000.0,
+            "color": "#C1976B",
+            "description": "A barren, rocky moon orbiting Hurston with minimal atmosphere. Its surface is marked by impact craters and mining operations extracting valuable minerals.",
+            "children": [
+              {
+                "name": "OOC_Stanton1a_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": -42294976.05027771,
+                  "y": 31981756.561524004,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton1a_HDMS_Bezdek",
+                "label": "HDMS-Bezdek",
+                "position": {
+                  "x": 180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton1a_HDMS_Lathan",
+                "label": "HDMS-Lathan",
+                "position": {
+                  "x": -200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -12808240877.13918,
+                  "y": -31476128.840109,
+                  "z": 245250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -12808240877.13918,
+                  "y": -31476128.840109,
+                  "z": -245250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -12807995627.13918,
+                  "y": -31476128.840109,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -12808486127.13918,
+                  "y": -31476128.840109,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -12808240877.13918,
+                  "y": -31230878.840109,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              },
+              {
+                "name": "OOC_Stanton_1a_Ariel_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -12808240877.13918,
+                  "y": -31721378.840109,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1a_Ariel"
+              }
+            ],
+            "visualRadius": 163500.0,
+            "atmosphereRadius": 188500.0,
+            "qtRadius": 165500.0
+          },
+          {
+            "name": "OOC_Stanton_1d_Ita",
+            "label": "Ita",
+            "position": {
+              "x": -12870719470.187265,
+              "y": 114913608.600053,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_1_Hurston",
+            "diameter": 325000.0,
+            "atmosphericHeight": 11000.0,
+            "qtHeight": 1300.0,
+            "color": "#9E6D5A",
+            "description": "A moon of Hurston with copper-colored terrain and steep mountains. Its surface is dotted with abandoned mining facilities and extraction sites.",
+            "children": [
+              {
+                "name": "OOC_Stanton1d_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 20384530.34994316,
+                  "y": -115389429.150673,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -12870719470.187265,
+                  "y": 114913608.600053,
+                  "z": 243750.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -12870719470.187265,
+                  "y": 114913608.600053,
+                  "z": -243750.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -12870475720.187265,
+                  "y": 114913608.600053,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -12870963220.187265,
+                  "y": 114913608.600053,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -12870719470.187265,
+                  "y": 115157358.600053,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              },
+              {
+                "name": "OOC_Stanton_1d_Ita_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -12870719470.187265,
+                  "y": 114669858.600053,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1d_Ita"
+              }
+            ],
+            "visualRadius": 162500.0,
+            "atmosphereRadius": 173500.0,
+            "qtRadius": 163800.0
+          },
+          {
+            "name": "OOC_Stanton_1b_Aberdeen",
+            "label": "Aberdeen",
+            "position": {
+              "x": -12795156549.568998,
+              "y": 40955550.560376,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_1_Hurston",
+            "diameter": 274000.0,
+            "atmosphericHeight": 16000.0,
+            "qtHeight": 1800.0,
+            "color": "#A76339",
+            "description": "A moon of Hurston with a distinctive reddish-orange appearance due to its acidic atmosphere and fungal biomes. Surface mining operations are prevalent despite harsh conditions.",
+            "children": [
+              {
+                "name": "OOC_Stanton1b_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": -55735901.947467804,
+                  "y": -41000764.189982004,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton1b_HDMS_Anderson",
+                "label": "HDMS-Anderson",
+                "position": {
+                  "x": 180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton1b_HDMS_Norgaard",
+                "label": "HDMS-Norgaard",
+                "position": {
+                  "x": -200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -12795156549.568998,
+                  "y": 40955550.560376,
+                  "z": 205500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -12795156549.568998,
+                  "y": 40955550.560376,
+                  "z": -205500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -12794951049.568998,
+                  "y": 40955550.560376,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -12795362049.568998,
+                  "y": 40955550.560376,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -12795156549.568998,
+                  "y": 41161050.560376,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              },
+              {
+                "name": "OOC_Stanton_1b_Aberdeen_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -12795156549.568998,
+                  "y": 40750050.560376,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1b_Aberdeen"
+              }
+            ],
+            "visualRadius": 137000.0,
+            "atmosphereRadius": 153000.0,
+            "qtRadius": 138800.0
+          },
+          {
+            "name": "OOC_Stanton_1c_Magda",
+            "label": "Magda",
+            "position": {
+              "x": -12908227826.581715,
+              "y": -74464580.982047,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_1_Hurston",
+            "diameter": 340000.0,
+            "atmosphericHeight": 12500.0,
+            "qtHeight": 1500.0,
+            "color": "#786041",
+            "description": "A dusty moon of Hurston characterized by its dark brown surface and large canyons. Mining outposts exploit its rich mineral deposits despite difficult terrain.",
+            "children": [
+              {
+                "name": "OOC_Stanton1c_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 58066250.04483795,
+                  "y": 74877626.61057001,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -12908227826.581715,
+                  "y": -74464580.982047,
+                  "z": 255000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -12908227826.581715,
+                  "y": -74464580.982047,
+                  "z": -255000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -12907972826.581715,
+                  "y": -74464580.982047,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -12908482826.581715,
+                  "y": -74464580.982047,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -12908227826.581715,
+                  "y": -74209580.982047,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              },
+              {
+                "name": "OOC_Stanton_1c_Magda_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -12908227826.581715,
+                  "y": -74719580.982047,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_1c_Magda"
+              }
+            ],
+            "visualRadius": 170000.0,
+            "atmosphereRadius": 182500.0,
+            "qtRadius": 171500.0
+          },
+          {
+            "name": "OOC_Stanton1_CommArray",
+            "label": "Comm Array",
+            "position": {
+              "x": -12849537839.551971,
+              "y": -771345.408289,
+              "z": 24000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_EverusHarbor",
+            "label": "Everus Harbor",
+            "position": {
+              "x": 1500000.0,
+              "y": 1200000.0,
+              "z": 500000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_Lorville",
+            "label": "Lorville",
+            "position": {
+              "x": 1250000.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "type": "city",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Edmond",
+            "label": "HDMS-Edmond",
+            "position": {
+              "x": 800000.0,
+              "y": 1200000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Stanhope",
+            "label": "HDMS-Stanhope",
+            "position": {
+              "x": -900000.0,
+              "y": -1100000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Oparei",
+            "label": "HDMS-Oparei",
+            "position": {
+              "x": 1100000.0,
+              "y": -950000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Pinewood",
+            "label": "HDMS-Pinewood",
+            "position": {
+              "x": -1050000.0,
+              "y": 980000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Thedus",
+            "label": "HDMS-Thedus",
+            "position": {
+              "x": 950000.0,
+              "y": 1050000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_HDMS_Hadley",
+            "label": "HDMS-Hadley",
+            "position": {
+              "x": -850000.0,
+              "y": -1050000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_DrugLab",
+            "label": "Reclamation & Disposal Orinth",
+            "position": {
+              "x": -1500000.0,
+              "y": -1200000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_Jericho",
+            "label": "Jericho Security Depot",
+            "position": {
+              "x": -1200000.0,
+              "y": 800000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM1",
+            "label": "OM-1",
+            "position": {
+              "x": 12850457093.0,
+              "y": 0.0,
+              "z": 1500000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM2",
+            "label": "OM-2",
+            "position": {
+              "x": 12850457093.0,
+              "y": 0.0,
+              "z": -1500000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM3",
+            "label": "OM-3",
+            "position": {
+              "x": 12851957093.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM4",
+            "label": "OM-4",
+            "position": {
+              "x": 12848957093.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM5",
+            "label": "OM-5",
+            "position": {
+              "x": 12850457093.0,
+              "y": 1500000.0,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton_1_Hurston_OM6",
+            "label": "OM-6",
+            "position": {
+              "x": 12850457093.0,
+              "y": -1500000.0,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_1_Hurston"
+          },
+          {
+            "name": "OOC_Stanton1_L2",
+            "label": "HUR L2",
+            "position": {
+              "x": 14135502848.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_1_Hurston",
+            "children": [
+              {
+                "name": "OOC_HUR_L2_Station",
+                "label": "HUR-L2 Faithful Dream Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton1_L2"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton1_L5",
+            "label": "HUR L5",
+            "position": {
+              "x": 6425227776.0,
+              "y": -11128823808.0,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_1_Hurston",
+            "children": [
+              {
+                "name": "OOC_HUR_L5_Station",
+                "label": "HUR-L5 Everlight Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton1_L5"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton1_L3",
+            "label": "HUR L3",
+            "position": {
+              "x": -12850457600.0,
+              "y": -1123.422729,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_1_Hurston",
+            "children": [
+              {
+                "name": "OOC_HUR_L3_Station",
+                "label": "HUR-L3 Thundering Express Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton1_L3"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton1_L4",
+            "label": "HUR L4",
+            "position": {
+              "x": 6425228288.0,
+              "y": 11128823808.0,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_1_Hurston",
+            "children": [
+              {
+                "name": "OOC_HUR_L4_Station",
+                "label": "HUR-L4 Melodic Waves Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton1_L4"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton1_L1",
+            "label": "HUR L1",
+            "position": {
+              "x": 11565411328.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_1_Hurston",
+            "children": [
+              {
+                "name": "OOC_HUR_L1_Station",
+                "label": "HUR-L1 Green Glade Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton1_L1"
+              }
+            ]
+          }
+        ],
+        "visualRadius": 1000000.0,
+        "atmosphereRadius": 1100000.0,
+        "qtRadius": 1008900.0
+      },
+      {
+        "name": "OOC_Stanton_2_Crusader",
+        "label": "Crusader",
+        "position": {
+          "x": -18962176000.0,
+          "y": -2664959999.999996,
+          "z": 0.0
+        },
+        "type": "planet",
+        "parent": "OOC_Stanton",
+        "diameter": 7450000.0,
+        "atmosphericHeight": 1000.0,
+        "qtHeight": 90000.0,
+        "color": "#7AA7CC",
+        "description": "A gas giant planet surrounded by a thick layer of clouds. Home to Crusader Industries, known for their spacecraft manufacturing facilities located in the upper atmosphere.",
+        "children": [
+          {
+            "name": "OOC_Stanton_2a_Cellin",
+            "label": "Cellin",
+            "position": {
+              "x": 18936740880.76663,
+              "y": 2620910339.2948523,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_2_Crusader",
+            "diameter": 260000.0,
+            "atmosphericHeight": 20000.0,
+            "qtHeight": 1500.0,
+            "color": "#D4CCC7",
+            "description": "A small rocky moon orbiting Crusader, with a thin atmosphere and surface covered in impact craters. Known for extreme temperature fluctuations between day and night.",
+            "children": [
+              {
+                "name": "OOC_Stanton2a_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 25677363.192382812,
+                  "y": 44396853.39241505,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_SecurityPostKareah",
+                "label": "Security Post Kareah",
+                "position": {
+                  "x": 25446739.59023285,
+                  "y": 43629821.2829752,
+                  "z": 200000.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Terra",
+                "label": "Terra Mills HydroFarm",
+                "position": {
+                  "x": 180000.0,
+                  "y": -220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Gallete",
+                "label": "Gallete Family Farms",
+                "position": {
+                  "x": -200000.0,
+                  "y": -200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Security",
+                "label": "Security Outpost Kareah",
+                "position": {
+                  "x": -180000.0,
+                  "y": 220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Hickes",
+                "label": "Hickes Research Outpost",
+                "position": {
+                  "x": 220000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Tram",
+                "label": "Tram & Myers Mining",
+                "position": {
+                  "x": -220000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton2a_Private",
+                "label": "Private Property",
+                "position": {
+                  "x": 180000.0,
+                  "y": 220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": 18936740880.76663,
+                  "y": 2620910339.2948523,
+                  "z": 195000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": 18936740880.76663,
+                  "y": 2620910339.2948523,
+                  "z": -195000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": 18936935880.76663,
+                  "y": 2620910339.2948523,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": 18936545880.76663,
+                  "y": 2620910339.2948523,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": 18936740880.76663,
+                  "y": 2621105339.2948523,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              },
+              {
+                "name": "OOC_Stanton_2a_Cellin_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": 18936740880.76663,
+                  "y": 2620715339.2948523,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2a_Cellin"
+              }
+            ],
+            "visualRadius": 130000.0,
+            "atmosphereRadius": 150000.0,
+            "qtRadius": 131500.0
+          },
+          {
+            "name": "OOC_Stanton_2b_Daymar",
+            "label": "Daymar",
+            "position": {
+              "x": 18993812460.46517,
+              "y": 2719761234.501436,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_2_Crusader",
+            "diameter": 295000.0,
+            "atmosphericHeight": 26000.0,
+            "qtHeight": 2500.0,
+            "color": "#DBAE6B",
+            "description": "A moon of Crusader with a sandy, desert-like appearance and breathable but thin atmosphere. Its surface features rolling dunes and rock formations.",
+            "children": [
+              {
+                "name": "OOC_Stanton2b_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": -32072077.72890091,
+                  "y": -54948230.30878878,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_CovalexShippingHub",
+                "label": "Covalex Shipping Hub",
+                "position": {
+                  "x": -31877658.528125763,
+                  "y": -54363257.01478386,
+                  "z": -300000.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_ArcCorp157",
+                "label": "ArcCorp Mining Area 157",
+                "position": {
+                  "x": 200000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_Kudre",
+                "label": "Kudre Ore",
+                "position": {
+                  "x": -240000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_Shubin",
+                "label": "Shubin Mining Facility SCD-1",
+                "position": {
+                  "x": 240000.0,
+                  "y": -160000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_Nuen",
+                "label": "Nuen Waste Management",
+                "position": {
+                  "x": -180000.0,
+                  "y": 240000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_ArcCorp045",
+                "label": "ArcCorp Mining Area 045",
+                "position": {
+                  "x": -180000.0,
+                  "y": -240000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_Eager",
+                "label": "Eager Flats Aid Shelter",
+                "position": {
+                  "x": 160000.0,
+                  "y": -300000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton2b_Wolf",
+                "label": "Wolf Point Aid Shelter",
+                "position": {
+                  "x": 150000.0,
+                  "y": 300000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": 18993812460.46517,
+                  "y": 2719761234.501436,
+                  "z": 221250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": 18993812460.46517,
+                  "y": 2719761234.501436,
+                  "z": -221250.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": 18994033710.46517,
+                  "y": 2719761234.501436,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": 18993591210.46517,
+                  "y": 2719761234.501436,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": 18993812460.46517,
+                  "y": 2719982484.501436,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              },
+              {
+                "name": "OOC_Stanton_2b_Daymar_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": 18993812460.46517,
+                  "y": 2719539984.501436,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2b_Daymar"
+              }
+            ],
+            "visualRadius": 147500.0,
+            "atmosphereRadius": 173500.0,
+            "qtRadius": 150000.0
+          },
+          {
+            "name": "OOC_Stanton_2c_Yela",
+            "label": "Yela",
+            "position": {
+              "x": 18901435201.072624,
+              "y": 2715923848.00152,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_2_Crusader",
+            "diameter": 313000.0,
+            "atmosphericHeight": 11000.0,
+            "qtHeight": 1200.0,
+            "color": "#AFBDC7",
+            "description": "An icy moon orbiting Crusader with a distinctive ring system. Known for its hidden smuggling outposts and abandoned research facilities.",
+            "children": [
+              {
+                "name": "OOC_Stanton2c_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 60891134.58596802,
+                  "y": -51418276.45318079,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_JumpTown",
+                "label": "JumpTown",
+                "position": {
+                  "x": 350000.0,
+                  "y": -280000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_GrimHex",
+                "label": "Grim HEX",
+                "position": {
+                  "x": 200000.0,
+                  "y": 150000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_Benson",
+                "label": "Benson Mining Outpost",
+                "position": {
+                  "x": -180000.0,
+                  "y": 220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_ArcCorp141",
+                "label": "ArcCorp Mining Area 141",
+                "position": {
+                  "x": 220000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_Deakins",
+                "label": "Deakins Research Outpost",
+                "position": {
+                  "x": -240000.0,
+                  "y": -160000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton2c_NT999XX",
+                "label": "NT-999-XX Research Outpost",
+                "position": {
+                  "x": 180000.0,
+                  "y": 240000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": 18901435201.072624,
+                  "y": 2715923848.00152,
+                  "z": 234750.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": 18901435201.072624,
+                  "y": 2715923848.00152,
+                  "z": -234750.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": 18901669951.072624,
+                  "y": 2715923848.00152,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": 18901200451.072624,
+                  "y": 2715923848.00152,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": 18901435201.072624,
+                  "y": 2716158598.00152,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              },
+              {
+                "name": "OOC_Stanton_2c_Yela_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": 18901435201.072624,
+                  "y": 2715689098.00152,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_2c_Yela"
+              }
+            ],
+            "visualRadius": 156500.0,
+            "atmosphereRadius": 167500.0,
+            "qtRadius": 157700.0
+          },
+          {
+            "name": "OOC_Stanton2_CommArray",
+            "label": "Comm Array",
+            "position": {
+              "x": 18960788083.080257,
+              "y": 2673762203.765219,
+              "z": 24000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton2_PortOlisar",
+            "label": "Port Olisar",
+            "position": {
+              "x": 2000000.0,
+              "y": 1500000.0,
+              "z": 500000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton2_Orison",
+            "label": "Orison",
+            "position": {
+              "x": 0.0,
+              "y": 1000000.0,
+              "z": 0.0
+            },
+            "type": "city",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton2_GrimHex",
+            "label": "Grim HEX",
+            "position": {
+              "x": -1800000.0,
+              "y": 1200000.0,
+              "z": 300000.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM1",
+            "label": "OM-1",
+            "position": {
+              "x": -18962176000.0,
+              "y": -2664959999.999996,
+              "z": 5587500.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM2",
+            "label": "OM-2",
+            "position": {
+              "x": -18962176000.0,
+              "y": -2664959999.999996,
+              "z": -5587500.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM3",
+            "label": "OM-3",
+            "position": {
+              "x": -18956588500.0,
+              "y": -2664959999.999996,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM4",
+            "label": "OM-4",
+            "position": {
+              "x": -18967763500.0,
+              "y": -2664959999.999996,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM5",
+            "label": "OM-5",
+            "position": {
+              "x": -18962176000.0,
+              "y": -2659372499.999996,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton_2_Crusader_OM6",
+            "label": "OM-6",
+            "position": {
+              "x": -18962176000.0,
+              "y": -2670547499.999996,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_2_Crusader"
+          },
+          {
+            "name": "OOC_Stanton2_L4",
+            "label": "CRU L4",
+            "position": {
+              "x": -7173168639.999996,
+              "y": -17754204160.000004,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_2_Crusader",
+            "children": [
+              {
+                "name": "OOC_CRU_L4_Station",
+                "label": "CRU-L4 Shallow Fields Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton2_L4"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton2_L2",
+            "label": "CRU L2",
+            "position": {
+              "x": -20858376485.43327,
+              "y": -2931474402.05844,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_2_Crusader",
+            "children": [
+              {
+                "name": "OOC_CRU_L2_Station",
+                "label": "CRU-L2 Beautiful Glen Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton2_L2"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton2_L5",
+            "label": "CRU L5",
+            "position": {
+              "x": -11789008988.260246,
+              "y": 15089246106.763807,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_2_Crusader",
+            "children": [
+              {
+                "name": "OOC_CRU_L5_Station",
+                "label": "CRU-L5 Shallow Frontier Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton2_L5"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton2_L1",
+            "label": "CRU L1",
+            "position": {
+              "x": -17065957375.999998,
+              "y": -2398463999.999994,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_2_Crusader",
+            "children": [
+              {
+                "name": "OOC_CRU_L1_Station",
+                "label": "CRU-L1 Ambitious Dream Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton2_L1"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton2_L3",
+            "label": "CRU L3",
+            "position": {
+              "x": 18962164826.094032,
+              "y": 2664965040.501728,
+              "z": 0.0
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_2_Crusader",
+            "children": [
+              {
+                "name": "OOC_CRU_L3_Station",
+                "label": "CRU-L3 Celestial Winds Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton2_L3"
+              }
+            ]
+          }
+        ],
+        "visualRadius": 3725000.0,
+        "atmosphereRadius": 3726000.0,
+        "qtRadius": 3815000.0
+      },
+      {
+        "name": "OOC_Stanton_3_ArcCorp",
+        "label": "ArcCorp",
+        "position": {
+          "x": 18587664739.85602,
+          "y": -22151916920.3126,
+          "z": 0.0
+        },
+        "type": "planet",
+        "parent": "OOC_Stanton",
+        "diameter": 1000000.0,
+        "atmosphericHeight": 25000.0,
+        "qtHeight": 10000.0,
+        "color": "#E85D45",
+        "description": "ArcCorp is a terrestrial super-Earth that has been completely covered in artificial structures. The planet is owned by the ArcCorp corporation and serves as an industrial manufacturing hub.",
+        "children": [
+          {
+            "name": "OOC_Stanton_3b_Wala",
+            "label": "Wala",
+            "position": {
+              "x": -18795680169.84462,
+              "y": 22303367072.58692,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "diameter": 280000.0,
+            "atmosphericHeight": 12000.0,
+            "qtHeight": 1400.0,
+            "color": "#908D8B",
+            "description": "A gray, rocky moon of ArcCorp with minimal atmosphere. Its surface is heavily cratered and hosts several abandoned mining facilities.",
+            "children": [
+              {
+                "name": "OOC_Stanton3b_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": 208381251.20427704,
+                  "y": -151707560.49388123,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton3b_ArcCorp",
+                "label": "ArcCorp Mining Area 056",
+                "position": {
+                  "x": 220000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton3b_ArcCorp2",
+                "label": "ArcCorp Mining Area 048",
+                "position": {
+                  "x": -180000.0,
+                  "y": 220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton3b_ArcCorp3",
+                "label": "ArcCorp Mining Area 061",
+                "position": {
+                  "x": -220000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton3b_ArcCorp4",
+                "label": "ArcCorp Mining Area 045",
+                "position": {
+                  "x": 180000.0,
+                  "y": -220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton3b_Samson",
+                "label": "Samson & Son's Salvage Center",
+                "position": {
+                  "x": 240000.0,
+                  "y": 160000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -18795680169.84462,
+                  "y": 22303367072.58692,
+                  "z": 210000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -18795680169.84462,
+                  "y": 22303367072.58692,
+                  "z": -210000.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -18795470169.84462,
+                  "y": 22303367072.58692,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -18795890169.84462,
+                  "y": 22303367072.58692,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -18795680169.84462,
+                  "y": 22303577072.58692,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              },
+              {
+                "name": "OOC_Stanton_3b_Wala_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -18795680169.84462,
+                  "y": 22303157072.58692,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3b_Wala"
+              }
+            ],
+            "visualRadius": 140000.0,
+            "atmosphereRadius": 152000.0,
+            "qtRadius": 141400.0
+          },
+          {
+            "name": "OOC_Stanton_3a_Lyria",
+            "label": "Lyria",
+            "position": {
+              "x": -18471722308.156055,
+              "y": 22182183706.761017,
+              "z": 0.0
+            },
+            "type": "moon",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "diameter": 290000.0,
+            "atmosphericHeight": 10000.0,
+            "qtHeight": 1200.0,
+            "color": "#E5E8F2",
+            "description": "A small, ice-covered moon orbiting ArcCorp, with cryovolcanic activity. Its surface contains valuable mineral deposits mined by numerous corporate outposts.",
+            "children": [
+              {
+                "name": "OOC_Stanton3a_CommArray",
+                "label": "Comm Array",
+                "position": {
+                  "x": -116325158.71881866,
+                  "y": -30233752.61979294,
+                  "z": 24000.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton3a_Humboldt",
+                "label": "Humboldt Mines",
+                "position": {
+                  "x": 220000.0,
+                  "y": 180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton3a_Loveridge",
+                "label": "Loveridge Mineral Reserve",
+                "position": {
+                  "x": -180000.0,
+                  "y": 200000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton3a_SAL",
+                "label": "SAL-5 Outpost",
+                "position": {
+                  "x": -220000.0,
+                  "y": -180000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton3a_SAL2",
+                "label": "SAL-2 Outpost",
+                "position": {
+                  "x": 180000.0,
+                  "y": -220000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton3a_Paradise",
+                "label": "Paradise Cove",
+                "position": {
+                  "x": 240000.0,
+                  "y": 160000.0,
+                  "z": 0.0
+                },
+                "type": "outpost",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM1",
+                "label": "OM-1",
+                "position": {
+                  "x": -18471722308.156055,
+                  "y": 22182183706.761017,
+                  "z": 217500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM2",
+                "label": "OM-2",
+                "position": {
+                  "x": -18471722308.156055,
+                  "y": 22182183706.761017,
+                  "z": -217500.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM3",
+                "label": "OM-3",
+                "position": {
+                  "x": -18471504808.156055,
+                  "y": 22182183706.761017,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM4",
+                "label": "OM-4",
+                "position": {
+                  "x": -18471939808.156055,
+                  "y": 22182183706.761017,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM5",
+                "label": "OM-5",
+                "position": {
+                  "x": -18471722308.156055,
+                  "y": 22182401206.761017,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              },
+              {
+                "name": "OOC_Stanton_3a_Lyria_OM6",
+                "label": "OM-6",
+                "position": {
+                  "x": -18471722308.156055,
+                  "y": 22181966206.761017,
+                  "z": 0.0
+                },
+                "type": "orbital_marker",
+                "parent": "OOC_Stanton_3a_Lyria"
+              }
+            ],
+            "visualRadius": 145000.0,
+            "atmosphereRadius": 155000.0,
+            "qtRadius": 146200.0
+          },
+          {
+            "name": "OOC_Stanton3_CommArray",
+            "label": "Comm Array",
+            "position": {
+              "x": -18586906355.726,
+              "y": 22151280560.32106,
+              "z": 24000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_Baijini",
+            "label": "Baijini Point",
+            "position": {
+              "x": 1800000.0,
+              "y": 1500000.0,
+              "z": 400000.0
+            },
+            "type": "station",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_Area18",
+            "label": "Area 18",
+            "position": {
+              "x": 0.0,
+              "y": 1200000.0,
+              "z": 0.0
+            },
+            "type": "city",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_Area17",
+            "label": "Area 17",
+            "position": {
+              "x": 1200000.0,
+              "y": -1500000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_Area19",
+            "label": "Area 19",
+            "position": {
+              "x": -1300000.0,
+              "y": 1400000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_Area20",
+            "label": "Area 20",
+            "position": {
+              "x": -1400000.0,
+              "y": -1300000.0,
+              "z": 0.0
+            },
+            "type": "outpost",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM1",
+            "label": "OM-1",
+            "position": {
+              "x": 18587664739.85602,
+              "y": -22151916920.3126,
+              "z": 750000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM2",
+            "label": "OM-2",
+            "position": {
+              "x": 18587664739.85602,
+              "y": -22151916920.3126,
+              "z": -750000.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM3",
+            "label": "OM-3",
+            "position": {
+              "x": 18588414739.85602,
+              "y": -22151916920.3126,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM4",
+            "label": "OM-4",
+            "position": {
+              "x": 18586914739.85602,
+              "y": -22151916920.3126,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM5",
+            "label": "OM-5",
+            "position": {
+              "x": 18587664739.85602,
+              "y": -22151166920.3126,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton_3_ArcCorp_OM6",
+            "label": "OM-6",
+            "position": {
+              "x": 18587664739.85602,
+              "y": -22152666920.3126,
+              "z": 0.0
+            },
+            "type": "orbital_marker",
+            "parent": "OOC_Stanton_3_ArcCorp"
+          },
+          {
+            "name": "OOC_Stanton3_L4",
+            "label": "ARC L4",
+            "position": {
+              "x": 28478354915.65576,
+              "y": 5021502482.911743,
+              "z": 8076.625
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "children": [
+              {
+                "name": "OOC_ARC_L4_Station",
+                "label": "ARC-L4 Glorious Vista Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton3_L4"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton3_L1",
+            "label": "ARC L1",
+            "position": {
+              "x": 16729134637.384644,
+              "y": -19937006924.891357,
+              "z": 8076.625
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "children": [
+              {
+                "name": "OOC_ARC_L1_Station",
+                "label": "ARC-L1 Wide Forest Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton3_L1"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton3_L2",
+            "label": "ARC L2",
+            "position": {
+              "x": 20446718503.390137,
+              "y": -24367450990.706055,
+              "z": 8076.625
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "children": [
+              {
+                "name": "OOC_ARC_L2_Station",
+                "label": "ARC-L2 Peaceful Streams Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton3_L2"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton3_L3",
+            "label": "ARC L3",
+            "position": {
+              "x": -25043446883.50293,
+              "y": 14458841787.628052,
+              "z": 8076.625
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "children": [
+              {
+                "name": "OOC_ARC_L3_Station",
+                "label": "ARC-L3 Shallow Frontier Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton3_L3"
+              }
+            ]
+          },
+          {
+            "name": "OOC_Stanton3_L5",
+            "label": "ARC L5",
+            "position": {
+              "x": -9890422516.169678,
+              "y": -27173732225.140015,
+              "z": 8076.625
+            },
+            "type": "lagrange",
+            "parent": "OOC_Stanton_3_ArcCorp",
+            "children": [
+              {
+                "name": "OOC_ARC_L5_Station",
+                "label": "ARC-L5 Crystal Winds Station",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "type": "station",
+                "parent": "OOC_Stanton3_L5"
+              }
+            ]
+          }
+        ],
+        "visualRadius": 500000.0,
+        "atmosphereRadius": 525000.0,
+        "qtRadius": 510000.0
+      },
+      {
+        "name": "OOC_JumpPoint_stanton_pyro",
+        "label": "Pyro Gateway",
+        "position": {
+          "x": 3310491639.802189,
+          "y": -27979408221.456882,
+          "z": -2676285679.0
+        },
+        "type": "gateway",
+        "parent": "Stanton"
+      },
+      {
+        "name": "OOC_JumpPoint_stanton_terra",
+        "label": "Terra Gateway",
+        "position": {
+          "x": 51118221616.90332,
+          "y": -5269981303.113817,
+          "z": -4339551619.0
+        },
+        "type": "gateway",
+        "parent": "Stanton"
+      },
+      {
+        "name": "OOC_JumpPoint_stanton_magnus",
+        "label": "Magnus Gateway",
+        "position": {
+          "x": -62284282868.18451,
+          "y": 23467602586.872375,
+          "z": 20198396608.0
+        },
+        "type": "gateway",
+        "parent": "Stanton"
+      }
+    ],
+    "visualRadius": 348000000.0,
+    "atmosphereRadius": 348001000.0
+  }
+}
