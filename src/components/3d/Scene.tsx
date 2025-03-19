@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Color, Vector3 } from 'three';
+import { Color, Vector3, PerspectiveCamera } from 'three';
 import { useThree } from '@react-three/fiber';
 import { Grid } from './Grid';
 import { Star } from './Star';
@@ -8,100 +8,20 @@ import { Moon } from './Moon';
 import { Station } from './Station';
 import { JumpPoint } from './JumpPoint';
 import { SCALE_FACTOR, CelestialType } from './constants';
-import CameraController, { CameraMode, CameraControllerHandle } from './CameraController';
+import CameraController, { CameraMode } from './CameraController';
+import systemDataService from '../../services/SystemDataService';
 
 interface SceneProps {
   onSelectObject?: (objectId: string | null) => void;
+  debug?: boolean;
 }
 
-// Mock data - in a full implementation, this would come from the stanton_system_map.json
-const mockData = {
-  star: {
-    name: "Stanton",
-    diameter: 696000, // km
-    color: "#F9D71C",
-    position: [0, 0, 0] as [number, number, number]
-  },
-  planets: [
-    {
-      name: "microTech",
-      diameter: 1000, // km
-      color: "#EDF5FA",
-      atmosphereColor: "#88EEFF",
-      atmosphereIntensity: 0.5,
-      orbitData: {
-        parentPosition: [0, 0, 0] as [number, number, number],
-        semiMajorAxis: 22.5, // Gm
-        eccentricity: 0.05,
-        inclination: 2,
-        rotation: 45
-      },
-      moons: [
-        {
-          name: "Clio",
-          diameter: 287, // km
-          color: "#AABBCC",
-          orbitData: {
-            parentPosition: [22.5, 0, 0] as [number, number, number],
-            semiMajorAxis: 1.2, // Gm
-            eccentricity: 0.01,
-            inclination: 5,
-            rotation: 10
-          }
-        }
-      ],
-      stations: [
-        {
-          name: "New Babbage",
-          size: 10, // km
-          color: "#88DDFF",
-          orbitData: {
-            parentPosition: [22.5, 0, 0] as [number, number, number],
-            semiMajorAxis: 0.3, // Gm
-            eccentricity: 0,
-            inclination: 0,
-            rotation: 0
-          }
-        }
-      ]
-    },
-    {
-      name: "ArcCorp",
-      diameter: 800, // km
-      color: "#CC2222",
-      atmosphereColor: "#FF6644",
-      atmosphereIntensity: 0.6,
-      orbitData: {
-        parentPosition: [0, 0, 0] as [number, number, number],
-        semiMajorAxis: 15.3, // Gm
-        eccentricity: 0.02,
-        inclination: 1.5,
-        rotation: 120
-      }
-    }
-  ],
-  jumpPoints: [
-    {
-      name: "Stanton-Pyro Jump",
-      size: 20, // km
-      color: "#FFAA22",
-      destination: "Pyro System",
-      orbitData: {
-        parentPosition: [0, 0, 0] as [number, number, number],
-        semiMajorAxis: 30, // Gm
-        eccentricity: 0.1,
-        inclination: 15,
-        rotation: 75
-      }
-    }
-  ]
-};
-
-export const Scene: React.FC<SceneProps> = ({ onSelectObject }) => {
+export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) => {
   const sceneRef = useRef<THREE.Group>(null);
-  const cameraControllerRef = useRef<CameraControllerHandle>(null);
+  const cameraControllerRef = useRef<any>(null);
   const [selectedObject, setSelectedObject] = useState<string | null>(null);
   const [currentCameraMode, setCurrentCameraMode] = useState<CameraMode>(CameraMode.OVERVIEW);
+  const { camera } = useThree();
 
   // Export the camera controller API for external use via window object
   useEffect(() => {
@@ -115,34 +35,103 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject }) => {
     };
   }, [cameraControllerRef.current]);
 
+  // Debug output for camera position 
+  useEffect(() => {
+    if (debug) {
+      const updateDebugInfo = () => {
+        // Cast camera to PerspectiveCamera to access fov
+        const perspCamera = camera as PerspectiveCamera;
+        
+        console.debug('Camera:', {
+          position: {
+            x: camera.position.x.toFixed(2), 
+            y: camera.position.y.toFixed(2), 
+            z: camera.position.z.toFixed(2)
+          },
+          fov: perspCamera.fov || 'N/A',
+          near: camera.near, 
+          far: camera.far
+        });
+      };
+      
+      // Log initial position
+      updateDebugInfo();
+      
+      // Set up interval for updates
+      const interval = setInterval(updateDebugInfo, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [camera, debug]);
+
   // Handle object selection
-  const handleSelectObject = useCallback((name: string) => {
-    const newSelected = name === selectedObject ? null : name;
+  const handleSelectObject = useCallback((id: string) => {
+    const newSelected = id === selectedObject ? null : id;
     setSelectedObject(newSelected);
     
     // Propagate selection to parent component if onSelectObject is provided
     if (onSelectObject) {
       onSelectObject(newSelected);
     }
-  }, [selectedObject, onSelectObject]);
+    
+    if (debug) {
+      console.debug('Selected object:', id);
+    }
+  }, [selectedObject, onSelectObject, debug]);
   
   // Handle double-click on celestial object
-  const handleObjectDoubleClick = useCallback((name: string, position: Vector3, type: CelestialType, size: number) => {
-    handleSelectObject(name);
+  const handleObjectDoubleClick = useCallback((id: string, position: Vector3, type: CelestialType, size: number) => {
+    handleSelectObject(id);
     
     if (cameraControllerRef.current) {
       cameraControllerRef.current.changeFocus({
         position,
         objectType: type,
         objectSize: size,
-        objectName: name
+        objectName: id
+      });
+      
+      if (debug) {
+        console.debug('Camera focusing on:', {
+          id,
+          position: {
+            x: position.x.toFixed(2), 
+            y: position.y.toFixed(2), 
+            z: position.z.toFixed(2)
+          },
+          type,
+          size
+        });
+      }
+    }
+  }, [handleSelectObject, debug]);
+  
+  // Get all objects from the system data service
+  const systemData = systemDataService.getAllObjects();
+  const rootObject = systemDataService.getRootObject();
+  
+  // Log system data for debugging
+  useEffect(() => {
+    if (debug) {
+      console.debug('System data loaded:', { 
+        objectCount: Object.keys(systemData).length,
+        rootObject: rootObject?.name || 'none'
       });
     }
-  }, [handleSelectObject]);
+  }, [systemData, rootObject, debug]);
   
   // Light colors that match Star Citizen aesthetic
   const ambientLightColor = new Color(0x222233);
   const directionalLightColor = new Color(0xffffee);
+  
+  // Get all celestial objects by type
+  const planets = systemDataService.getObjectsByType(CelestialType.PLANET);
+  const moons = systemDataService.getObjectsByType(CelestialType.MOON);
+  const stations = systemDataService.getObjectsByType(CelestialType.STATION);
+  const jumpPoints = systemDataService.getObjectsByType(CelestialType.JUMP_POINT);
+  
+  if (!rootObject) {
+    return <group ref={sceneRef}><mesh><boxGeometry /></mesh></group>;
+  }
   
   return (
     <group ref={sceneRef}>
@@ -174,133 +163,104 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject }) => {
         shadow-camera-near={0.5}
       />
       
-      {/* Stanton star at center of the scene */}
+      {/* Star at center of the system */}
       <Star 
-        position={mockData.star.position} 
-        name={mockData.star.name}
-        diameter={mockData.star.diameter / 1000000 * SCALE_FACTOR} 
-        color={mockData.star.color}
-        onClick={() => handleSelectObject(mockData.star.name)}
+        position={[rootObject.position.x, rootObject.position.y, rootObject.position.z]} 
+        name={rootObject.name}
+        diameter={rootObject.size} 
+        color={rootObject.color}
+        onClick={() => handleSelectObject(rootObject.id)}
         onDoubleClick={() => handleObjectDoubleClick(
-          mockData.star.name, 
-          new Vector3(...mockData.star.position),
+          rootObject.id, 
+          rootObject.position,
           CelestialType.STAR,
-          mockData.star.diameter / 1000000 * SCALE_FACTOR
+          rootObject.size
         )}
-        isSelected={selectedObject === mockData.star.name}
+        isSelected={selectedObject === rootObject.id}
+        debug={debug}
       />
       
       {/* Planets */}
-      {mockData.planets.map(planet => {
-        const position = new Vector3(
-          planet.orbitData.parentPosition[0] + planet.orbitData.semiMajorAxis * SCALE_FACTOR,
-          planet.orbitData.parentPosition[1],
-          planet.orbitData.parentPosition[2]
-        );
-        
-        return (
-          <React.Fragment key={planet.name}>
-            <Planet 
-              position={[position.x, position.y, position.z]} 
-              name={planet.name}
-              diameter={planet.diameter / 1000000 * SCALE_FACTOR}
-              color={planet.color}
-              atmosphereColor={planet.atmosphereColor}
-              atmosphereIntensity={planet.atmosphereIntensity}
-              onClick={() => handleSelectObject(planet.name)}
-              onDoubleClick={() => handleObjectDoubleClick(
-                planet.name, 
-                position,
-                CelestialType.PLANET,
-                planet.diameter / 1000000 * SCALE_FACTOR
-              )}
-              isSelected={selectedObject === planet.name}
-            />
-            
-            {/* Moons for this planet */}
-            {planet.moons && planet.moons.map(moon => {
-              const moonPosition = new Vector3(
-                position.x + moon.orbitData.semiMajorAxis * SCALE_FACTOR,
-                position.y,
-                position.z
-              );
-              
-              return (
-                <Moon 
-                  key={moon.name}
-                  position={[moonPosition.x, moonPosition.y, moonPosition.z]}
-                  name={moon.name}
-                  diameter={moon.diameter / 1000000 * SCALE_FACTOR}
-                  color={moon.color}
-                  onClick={() => handleSelectObject(moon.name)}
-                  onDoubleClick={() => handleObjectDoubleClick(
-                    moon.name, 
-                    moonPosition,
-                    CelestialType.MOON,
-                    moon.diameter / 1000000 * SCALE_FACTOR
-                  )}
-                  isSelected={selectedObject === moon.name}
-                />
-              );
-            })}
-            
-            {/* Stations for this planet */}
-            {planet.stations && planet.stations.map(station => {
-              const stationPosition = new Vector3(
-                position.x + station.orbitData.semiMajorAxis * SCALE_FACTOR,
-                position.y,
-                position.z
-              );
-              
-              return (
-                <Station 
-                  key={station.name}
-                  position={[stationPosition.x, stationPosition.y, stationPosition.z]}
-                  name={station.name}
-                  size={station.size / 1000000 * SCALE_FACTOR}
-                  color={station.color}
-                  onClick={() => handleSelectObject(station.name)}
-                  onDoubleClick={() => handleObjectDoubleClick(
-                    station.name, 
-                    stationPosition,
-                    CelestialType.STATION,
-                    station.size / 1000000 * SCALE_FACTOR
-                  )}
-                  isSelected={selectedObject === station.name}
-                />
-              );
-            })}
-          </React.Fragment>
-        );
-      })}
+      {planets.map(planet => (
+        <Planet 
+          key={planet.id}
+          position={[planet.position.x, planet.position.y, planet.position.z]} 
+          name={planet.name}
+          diameter={planet.size}
+          color={planet.color}
+          atmosphereColor={planet.atmosphereColor}
+          atmosphereIntensity={0.3}
+          onClick={() => handleSelectObject(planet.id)}
+          onDoubleClick={() => handleObjectDoubleClick(
+            planet.id, 
+            planet.position,
+            CelestialType.PLANET,
+            planet.size
+          )}
+          isSelected={selectedObject === planet.id}
+          debug={debug}
+        />
+      ))}
+      
+      {/* Moons */}
+      {moons.map(moon => (
+        <Moon
+          key={moon.id}
+          position={[moon.position.x, moon.position.y, moon.position.z]}
+          name={moon.name}
+          diameter={moon.size}
+          color={moon.color}
+          onClick={() => handleSelectObject(moon.id)}
+          onDoubleClick={() => handleObjectDoubleClick(
+            moon.id,
+            moon.position,
+            CelestialType.MOON,
+            moon.size
+          )}
+          isSelected={selectedObject === moon.id}
+          debug={debug}
+        />
+      ))}
+      
+      {/* Stations */}
+      {stations.map(station => (
+        <Station
+          key={station.id}
+          position={[station.position.x, station.position.y, station.position.z]}
+          name={station.name}
+          size={station.size}
+          color={station.color}
+          onClick={() => handleSelectObject(station.id)}
+          onDoubleClick={() => handleObjectDoubleClick(
+            station.id,
+            station.position,
+            CelestialType.STATION,
+            station.size
+          )}
+          isSelected={selectedObject === station.id}
+          debug={debug}
+        />
+      ))}
       
       {/* Jump Points */}
-      {mockData.jumpPoints.map(jumpPoint => {
-        const position = new Vector3(
-          jumpPoint.orbitData.parentPosition[0] + jumpPoint.orbitData.semiMajorAxis * SCALE_FACTOR,
-          jumpPoint.orbitData.parentPosition[1],
-          jumpPoint.orbitData.parentPosition[2]
-        );
-        
-        return (
-          <JumpPoint 
-            key={jumpPoint.name}
-            position={[position.x, position.y, position.z]}
-            name={jumpPoint.name}
-            size={jumpPoint.size / 1000000 * SCALE_FACTOR}
-            destination={jumpPoint.destination}
-            color={jumpPoint.color}
-            onClick={() => handleSelectObject(jumpPoint.name)}
-            onDoubleClick={() => handleObjectDoubleClick(
-              jumpPoint.name, 
-              position,
-              CelestialType.JUMP_POINT,
-              jumpPoint.size / 1000000 * SCALE_FACTOR
-            )}
-            isSelected={selectedObject === jumpPoint.name}
-          />
-        );
-      })}
+      {jumpPoints.map(jumpPoint => (
+        <JumpPoint
+          key={jumpPoint.id}
+          position={[jumpPoint.position.x, jumpPoint.position.y, jumpPoint.position.z]}
+          name={jumpPoint.name}
+          size={jumpPoint.size}
+          color={jumpPoint.color}
+          onClick={() => handleSelectObject(jumpPoint.id)}
+          onDoubleClick={() => handleObjectDoubleClick(
+            jumpPoint.id,
+            jumpPoint.position,
+            CelestialType.JUMP_POINT,
+            jumpPoint.size
+          )}
+          isSelected={selectedObject === jumpPoint.id}
+          debug={debug}
+        />
+      ))}
       
       {/* Grid for reference */}
       <Grid size={100} divisions={20} />
