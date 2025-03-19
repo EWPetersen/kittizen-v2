@@ -1,8 +1,8 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sphere, Html } from '@react-three/drei';
 import { Color, Vector3 } from 'three';
-import { CelestialType, SCALE_FACTOR, LABEL_OFFSET } from './constants';
+import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, VISUAL_SCALE_FACTORS } from './constants';
 import { OrbitalPath } from './OrbitalPath';
 
 interface MoonProps {
@@ -22,6 +22,7 @@ interface MoonProps {
   onDoubleClick?: () => void;
   isSelected?: boolean;
   children?: React.ReactNode;
+  debug?: boolean; // Flag to enable debug rendering
 }
 
 export const Moon: React.FC<MoonProps> = ({
@@ -34,13 +35,42 @@ export const Moon: React.FC<MoonProps> = ({
   onClick,
   onDoubleClick,
   isSelected = false,
-  children
+  children,
+  debug = false
 }) => {
   const moonRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
-  // Convert diameter from km to scene units
-  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR; // km to Gm * SCALE_FACTOR
+  // Apply visual scale factor for better visibility
+  const visualScaleFactor = VISUAL_SCALE_FACTORS.MOON;
+  
+  // Convert diameter from km to scene units, with visual scaling
+  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR * visualScaleFactor;
+  
+  // Log debug info if debug flag is set
+  React.useEffect(() => {
+    if (debug) {
+      console.debug(`Moon ${name}:`, {
+        position: position ? {
+          x: position[0].toFixed(4),
+          y: position[1].toFixed(4),
+          z: position[2].toFixed(4)
+        } : 'None',
+        orbitData: orbitData ? {
+          parentPosition: orbitData.parentPosition ? {
+            x: orbitData.parentPosition[0].toFixed(4),
+            y: orbitData.parentPosition[1].toFixed(4),
+            z: orbitData.parentPosition[2].toFixed(4)
+          } : 'None',
+          semiMajorAxis: orbitData.semiMajorAxis
+        } : 'None',
+        diameter,
+        radius: (diameter / 2) / 1000000 * SCALE_FACTOR, // Actual radius without visual scale
+        visualRadius: radius, // Scaled radius for display
+        visualScaleFactor
+      });
+    }
+  }, [name, position, orbitData, diameter, radius, debug, visualScaleFactor]);
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
@@ -67,7 +97,7 @@ export const Moon: React.FC<MoonProps> = ({
     }
   });
   
-  // Handle events
+  // Handle hover and selection
   const handlePointerOver = () => setHovered(true);
   const handlePointerOut = () => setHovered(false);
   const handleClick = (e: any) => {
@@ -92,15 +122,14 @@ export const Moon: React.FC<MoonProps> = ({
       >
         <meshStandardMaterial 
           color={color} 
-          roughness={0.9} 
+          roughness={0.9}
           metalness={0.1}
-          map={undefined} // Would use a texture here in a full implementation
         />
       </Sphere>
       
       {/* Selection indicator */}
       {isSelected && (
-        <Sphere args={[diameter * 1.1, 16, 16]}>
+        <Sphere args={[radius * 1.1, 16, 16]}>
           <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
         </Sphere>
       )}
@@ -111,16 +140,14 @@ export const Moon: React.FC<MoonProps> = ({
         center
         className="moon-label"
         style={{
-          color: '#ffffff',
-          background: isSelected || hovered ? 'rgba(50, 120, 200, 0.7)' : 'rgba(30, 60, 100, 0.5)',
-          padding: '2px 6px',
+          color: 'white',
+          backgroundColor: isSelected ? 'rgba(0,100,255,0.7)' : (hovered ? 'rgba(0,70,180,0.5)' : 'rgba(0,0,0,0.5)'),
+          padding: '3px 6px',
           borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'monospace',
+          fontSize: '12px',
           pointerEvents: 'none',
-          opacity: hovered || isSelected ? 1 : 0.7,
-          transition: 'all 0.2s ease',
-          transform: 'translateY(-50%)',
+          whiteSpace: 'nowrap',
+          userSelect: 'none'
         }}
       >
         {name}

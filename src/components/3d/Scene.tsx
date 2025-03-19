@@ -63,6 +63,13 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
     }
   }, [camera, debug]);
 
+  // Add debug call to systemDataService
+  useEffect(() => {
+    if (debug) {
+      systemDataService.logDebugInfo();
+    }
+  }, [debug]);
+
   // Handle object selection
   const handleSelectObject = useCallback((id: string) => {
     const newSelected = id === selectedObject ? null : id;
@@ -128,6 +135,30 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
   const moons = systemDataService.getObjectsByType(CelestialType.MOON);
   const stations = systemDataService.getObjectsByType(CelestialType.STATION);
   const jumpPoints = systemDataService.getObjectsByType(CelestialType.JUMP_POINT);
+  
+  // Debug parent objects
+  if (debug) {
+    moons.forEach(moon => {
+      if (moon.parent) {
+        const parentObj = systemData[moon.parent];
+        if (parentObj) {
+          console.debug(`Moon ${moon.name} - parent: ${parentObj.name}`, {
+            moonPosition: {
+              x: moon.position.x.toFixed(4),
+              y: moon.position.y.toFixed(4),
+              z: moon.position.z.toFixed(4)
+            },
+            parentPosition: {
+              x: parentObj.position.x.toFixed(4),
+              y: parentObj.position.y.toFixed(4),
+              z: parentObj.position.z.toFixed(4)
+            },
+            distance: moon.position.distanceTo(parentObj.position).toFixed(4)
+          });
+        }
+      }
+    });
+  }
   
   if (!rootObject) {
     return <group ref={sceneRef}><mesh><boxGeometry /></mesh></group>;
