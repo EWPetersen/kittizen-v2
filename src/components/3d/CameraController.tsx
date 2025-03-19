@@ -18,19 +18,22 @@ interface FocusTarget {
 }
 
 interface CameraControllerProps {
-  initialFocusTarget?: FocusTarget;
+  initialFocusTarget?: FocusTarget | null;
   initialCameraMode?: CameraMode;
   onFocusChange?: (target: FocusTarget | null) => void;
 }
 
-export interface CameraControllerHandle {
-  changeFocus: (newTarget: FocusTarget | null, transitionTime?: number) => void;
+interface CameraControllerHandle {
+  changeFocus: (target: FocusTarget | null, transitionTime?: number) => void;
   setCameraMode: (mode: CameraMode) => void;
   resetView: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
   stopZoom: () => void;
 }
+
+// Default position for the overview camera - 90 Gm above origin
+const DEFAULT_CAMERA_POSITION = new Vector3(0, 90, 0);
 
 export const CameraController = forwardRef<CameraControllerHandle, CameraControllerProps>(({
   initialFocusTarget,
@@ -62,7 +65,7 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
       
       switch (cameraMode) {
         case CameraMode.OVERVIEW:
-          cam.position.set(0, 200, 0);
+          cam.position.copy(DEFAULT_CAMERA_POSITION);
           if (controlsRef.current) {
             controlsRef.current.target.set(0, 0, 0);
           }
@@ -83,25 +86,93 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
         case CameraMode.FIRST_PERSON:
           if (focusTarget) {
             const forwardDirection = new Vector3(1, 0, 0);
-            const offset = focusTarget.objectSize * 1.2;
-            const firstPersonPos = focusTarget.position.clone().add(forwardDirection.multiplyScalar(offset));
-            cam.position.copy(firstPersonPos);
+            const distance = focusTarget.objectSize * 1.1;
+            
+            const firstPersonPosition = focusTarget.position.clone().add(
+              forwardDirection.multiplyScalar(distance)
+            );
+            
+            cam.position.copy(firstPersonPosition);
             
             if (controlsRef.current) {
-              // Look slightly ahead in first person
-              const lookTarget = focusTarget.position.clone().add(forwardDirection.multiplyScalar(offset * 10));
-              controlsRef.current.target.copy(lookTarget);
+              controlsRef.current.target.copy(focusTarget.position);
             }
           }
           break;
       }
       
+      // Store current camera and target positions
       prevCameraPosition.current.copy(cam.position);
       if (controlsRef.current) {
         prevTargetPosition.current.copy(controlsRef.current.target);
       }
     }
-  }, [cameraMode, focusTarget, isTransitioning, camera]);
+  }, [camera, cameraMode, controlsRef, isTransitioning]);
+  
+  // Initialize camera on mount - set up far plane for star system scale
+  useEffect(() => {
+    if (cameraRef.current) {
+      const cam = cameraRef.current;
+      
+      // Set up near and far planes to handle the required zoom range (1000m to 120 Gm)
+      cam.near = 0.0000001; // 0.1 meters in Gm (extremely close)
+      cam.far = 200;        // 200 Gm (very far)
+      cam.updateProjectionMatrix();
+      
+      // Initialize position
+      cam.position.copy(DEFAULT_CAMERA_POSITION);
+      
+      console.debug('Camera initialized:', {
+        position: cam.position,
+        near: cam.near,
+        far: cam.far,
+        fov: cam.fov
+      });
+    }
+  }, []);
+  
+  // Set up orbit controls configuration for adaptive zooming
+  useEffect(() => {
+    if (controlsRef.current) {
+      const controls = controlsRef.current;
+      
+      // Configure controls for better zoom behavior
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      
+      // Allow zooming to get extremely close or far
+      controls.minDistance = 0.0001; // 100,000 meters in Gm
+      controls.maxDistance = 150;    // 150 Gm
+      
+      // Adjust zoom speed based on distance
+      const origZoomSpeed = controls.zoomSpeed;
+      controls.zoomSpeed = 1.0;
+      
+      // Add a custom zoom handler that adjusts speed based on distance
+      const origDolly = controls.dolly;
+      controls.dolly = (dollyScale: number) => {
+        // Scale zoom speed based on distance from target
+        const distanceToTarget = controls.object.position.distanceTo(controls.target);
+        let adjustedSpeed;
+        
+        if (distanceToTarget > 10) {
+          // Far away (system scale) - faster zooming
+          adjustedSpeed = 2.0;
+        } else if (distanceToTarget < 0.01) {
+          // Very close (station/detailed scale) - slower zooming
+          adjustedSpeed = 0.2;
+        } else {
+          // Normal range
+          adjustedSpeed = 1.0;
+        }
+        
+        controls.zoomSpeed = origZoomSpeed * adjustedSpeed;
+        origDolly.call(controls, dollyScale);
+      };
+      
+      console.debug('Orbit controls configured for adaptive zooming');
+    }
+  }, [controlsRef.current]);
   
   // Handle focus change
   const changeFocus = useCallback((newTarget: FocusTarget | null, transitionTime = 1.5) => {
@@ -145,62 +216,60 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
     }
   }, [camera, onFocusChange, transitionStartPos, transitionStartTarget]);
   
-  // Animation frame update
+  // Handle camera updates each frame
   useFrame((_, delta) => {
     if (!cameraRef.current || !controlsRef.current) return;
     
     const cam = cameraRef.current;
     const controls = controlsRef.current;
     
-    // Handle camera transitioning
+    // Handle camera transitions
     if (isTransitioning) {
-      // Increment transition progress
+      // Update transition progress
+      const progressDelta = delta / 1.5; // 1.5 second transition
       setTransitionProgress(prev => {
-        const newProgress = prev + delta * 0.7; // Adjust for transition speed
-        
-        if (newProgress >= 1) {
+        const newProgress = prev + progressDelta;
+        if (newProgress >= 1.0) {
           setIsTransitioning(false);
-          return 1;
+          return 1.0;
         }
-        
         return newProgress;
       });
       
-      // Get target position based on camera mode and focus target
-      let targetCameraPosition = new Vector3();
-      let targetControlsPosition = new Vector3();
+      // Calculate target position based on focus target and camera mode
+      const targetCameraPosition = new Vector3();
+      const targetControlsPosition = new Vector3();
       
       if (focusTarget) {
         switch (cameraMode) {
           case CameraMode.OVERVIEW:
-            targetCameraPosition.set(0, 200, 0);
+            targetCameraPosition.copy(DEFAULT_CAMERA_POSITION);
             targetControlsPosition.set(0, 0, 0);
             break;
             
           case CameraMode.ORBIT:
-            const distanceFactor = getDistanceForObject(focusTarget.objectType, focusTarget.objectSize);
-            targetCameraPosition = focusTarget.position.clone().add(
-              new Vector3(distanceFactor, distanceFactor * 0.5, distanceFactor)
+            const orbitDistance = getDistanceForObject(focusTarget.objectType, focusTarget.objectSize);
+            targetCameraPosition.set(
+              focusTarget.position.x + orbitDistance,
+              focusTarget.position.y + orbitDistance * 0.5,
+              focusTarget.position.z + orbitDistance
             );
             targetControlsPosition.copy(focusTarget.position);
             break;
             
           case CameraMode.FIRST_PERSON:
-            const forwardDirection = new Vector3(1, 0, 0);
-            const offset = focusTarget.objectSize * 1.2;
-            targetCameraPosition = focusTarget.position.clone().add(
-              forwardDirection.multiplyScalar(offset)
+            const fpDistance = focusTarget.objectSize * 1.1;
+            targetCameraPosition.set(
+              focusTarget.position.x + fpDistance,
+              focusTarget.position.y + fpDistance * 0.1,
+              focusTarget.position.z
             );
-            
-            // Look ahead in first person
-            targetControlsPosition = focusTarget.position.clone().add(
-              forwardDirection.multiplyScalar(offset * 10)
-            );
+            targetControlsPosition.copy(focusTarget.position);
             break;
         }
       } else {
         // Default to overview if no target
-        targetCameraPosition.set(0, 200, 0);
+        targetCameraPosition.copy(DEFAULT_CAMERA_POSITION);
         targetControlsPosition.set(0, 0, 0);
       }
       
@@ -249,19 +318,44 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
   });
   
   // Utility functions
-  const getDistanceForObject = (objectType: CelestialType, objectSize: number): number => {
-    const baseDistance = objectSize * 5;
+  const getDistanceForObject = (type: CelestialType, size: number): number => {
+    // Base distance calculation that varies with object size
+    let baseFactor = 0;
     
-    switch (objectType) {
+    switch (type) {
       case CelestialType.STAR:
-        return baseDistance * 2;
+        baseFactor = 10;
+        break;
       case CelestialType.PLANET:
-        return baseDistance * 1.5;
+        baseFactor = 5;
+        break;
       case CelestialType.MOON:
-        return baseDistance * 1.2;
+        baseFactor = 3; 
+        break;
+      case CelestialType.STATION:
+        baseFactor = 0.5;
+        break;
       default:
-        return baseDistance;
+        baseFactor = 2;
     }
+    
+    // Logarithmic scaling to handle huge size differences
+    // For planets/moons, size is in km, so convert to appropriate scale
+    // Small objects get closer, large objects viewed from further
+    let scaledSize = size;
+    
+    if (type === CelestialType.PLANET || type === CelestialType.MOON) {
+      // Convert km to Gm for distance calculation
+      scaledSize = size / 1000000;
+    } else if (type === CelestialType.STAR) {
+      // Stars are huge, so scale them down more aggressively
+      scaledSize = (size / 1000000) * 0.1;
+    }
+    
+    // Calculate distance with logarithmic scaling to handle huge size differences
+    const distance = baseFactor * (0.1 + Math.log10(1 + scaledSize));
+    
+    return distance;
   };
   
   const updateCameraPlanes = (cam: PerspectiveCamera) => {
@@ -270,10 +364,11 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
       const distance = cam.position.distanceTo(focusTarget.position);
       
       // Set near plane based on distance and object size
-      cam.near = Math.max(0.01, distance * 0.001);
+      // This allows zooming in to 1000m
+      cam.near = Math.max(0.001, distance * 0.001);
       
-      // Set far plane based on system scale
-      cam.far = 100000;
+      // Set far plane based on system scale - 120 Gm
+      cam.far = 150;
       
       // Update projection matrix for changes to take effect
       cam.updateProjectionMatrix();
@@ -366,15 +461,15 @@ export const CameraController = forwardRef<CameraControllerHandle, CameraControl
     zoomSpeed: 1.0,
     panSpeed: 1.0,
     rotateSpeed: 0.8,
-    maxDistance: 10000,
-    minDistance: 0.1,
+    maxDistance: 120, // 120 Gm
+    minDistance: 0.001, // 1000 meters
     maxPolarAngle: cameraMode === CameraMode.OVERVIEW ? Math.PI / 2 - 0.1 : Math.PI, // Prevent going below horizon in overview
     ref: controlsRef
   };
   
   return (
     <>
-      <DreiCamera ref={cameraRef as React.RefObject<PerspectiveCamera>} makeDefault position={[0, 200, 0]} />
+      <DreiCamera ref={cameraRef as React.RefObject<PerspectiveCamera>} makeDefault position={DEFAULT_CAMERA_POSITION} />
       <OrbitControls {...controlsConfig} />
     </>
   );

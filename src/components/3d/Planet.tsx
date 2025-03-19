@@ -1,33 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Sphere, Html } from '@react-three/drei';
-import { Color, Vector3, ShaderMaterial, MeshStandardMaterial } from 'three';
-import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, VISUAL_SCALE_FACTORS } from './constants';
+import { Vector3 } from 'three';
+import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, getAdaptiveScale } from './constants';
 import { OrbitalPath } from './OrbitalPath';
-
-// Vertex shader for atmosphere effect
-const atmosphereVertexShader = `
-  varying vec3 vNormal;
-  varying vec2 vUv;
-  
-  void main() {
-    vNormal = normalize(normalMatrix * normal);
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-
-// Fragment shader for atmosphere effect
-const atmosphereFragmentShader = `
-  uniform vec3 atmosphereColor;
-  uniform float atmosphereIntensity;
-  varying vec3 vNormal;
-  
-  void main() {
-    float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-    gl_FragColor = vec4(atmosphereColor, intensity * atmosphereIntensity);
-  }
-`;
+import { Atmosphere } from './Atmosphere';
 
 interface PlanetProps {
   name: string;
@@ -56,8 +33,8 @@ export const Planet: React.FC<PlanetProps> = ({
   position,
   orbitData,
   diameter,
-  color = '#aabbcc',
-  atmosphereColor = '#88aaff',
+  color = '#88aacc',
+  atmosphereColor = '#88eeff',
   atmosphereIntensity = 0.3,
   rotationPeriod = 24,
   onClick,
@@ -67,27 +44,8 @@ export const Planet: React.FC<PlanetProps> = ({
   debug = false
 }) => {
   const planetRef = useRef<THREE.Mesh>(null);
-  const atmosphereRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
-  
-  // Apply visual scale factor for better visibility
-  const visualScaleFactor = VISUAL_SCALE_FACTORS.PLANET;
-  
-  // Convert diameter from km to scene units, with visual scaling
-  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR * visualScaleFactor;
-  
-  // Log debug info if debug flag is set
-  React.useEffect(() => {
-    if (debug) {
-      console.debug(`Planet ${name}:`, {
-        position,
-        diameter,
-        radius: (diameter / 2) / 1000000 * SCALE_FACTOR, // Actual radius without visual scale
-        visualRadius: radius, // Scaled radius for display
-        visualScaleFactor
-      });
-    }
-  }, [name, position, diameter, radius, debug, visualScaleFactor]);
+  const { camera } = useThree();
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
@@ -126,6 +84,28 @@ export const Planet: React.FC<PlanetProps> = ({
     return new Vector3(0, 0, 0);
   }, [position, orbitData, debug, name]);
   
+  // Calculate adaptive size based on camera distance
+  const adaptiveRadius = useMemo(() => {
+    // Get distance from camera to object
+    const cameraDistance = calculatedPosition.distanceTo(camera.position);
+    
+    // Base radius calculation
+    const baseRadius = (diameter / 2) / 1000000 * SCALE_FACTOR;
+    
+    // Apply adaptive scaling based on camera distance
+    const adaptiveSize = getAdaptiveScale(baseRadius, CelestialType.PLANET, cameraDistance);
+    
+    if (debug) {
+      console.debug(`Planet ${name} adaptive sizing:`, {
+        baseRadius,
+        cameraDistance,
+        adaptiveSize
+      });
+    }
+    
+    return adaptiveSize;
+  }, [camera.position, calculatedPosition, diameter, debug, name]);
+  
   // Animation for rotation
   useFrame(({ clock }) => {
     if (planetRef.current) {
@@ -147,27 +127,12 @@ export const Planet: React.FC<PlanetProps> = ({
     if (onDoubleClick) onDoubleClick();
   };
   
-  // Create atmosphere material
-  const atmosphereMaterial = useMemo(() => {
-    return new ShaderMaterial({
-      vertexShader: atmosphereVertexShader,
-      fragmentShader: atmosphereFragmentShader,
-      uniforms: {
-        atmosphereColor: { value: new Color(atmosphereColor) },
-        atmosphereIntensity: { value: atmosphereIntensity }
-      },
-      transparent: true,
-      blending: 2, // AdditiveBlending
-      side: 1, // BackSide
-    });
-  }, [atmosphereColor, atmosphereIntensity]);
-  
   return (
     <group position={calculatedPosition}>
       {/* Planet mesh */}
       <Sphere 
         ref={planetRef}
-        args={[radius, 64, 64]} 
+        args={[adaptiveRadius, 32, 32]} 
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
@@ -175,38 +140,38 @@ export const Planet: React.FC<PlanetProps> = ({
       >
         <meshStandardMaterial 
           color={color} 
-          roughness={0.8} 
-          metalness={0.2}
-          emissive={new Color(color).multiplyScalar(0.05)}
+          roughness={0.8}
+          metalness={0.1}
         />
       </Sphere>
       
-      {/* Atmosphere */}
-      <Sphere 
-        ref={atmosphereRef}
-        args={[radius * 1.025, 64, 64]}
-      >
-        <primitive object={atmosphereMaterial} attach="material" />
-      </Sphere>
+      {/* Planet atmosphere */}
+      {atmosphereColor && (
+        <Atmosphere 
+          radius={adaptiveRadius} 
+          color={atmosphereColor} 
+          intensity={atmosphereIntensity} 
+        />
+      )}
       
       {/* Selection indicator */}
       {isSelected && (
-        <Sphere args={[radius * 1.1, 32, 32]}>
+        <Sphere args={[adaptiveRadius * 1.1, 16, 16]}>
           <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
         </Sphere>
       )}
       
       {/* Planet label */}
       <Html 
-        position={[0, radius * LABEL_OFFSET, 0]}
+        position={[0, adaptiveRadius * LABEL_OFFSET, 0]}
         center
         className="planet-label"
         style={{
           color: 'white',
           backgroundColor: isSelected ? 'rgba(0,100,255,0.7)' : (hovered ? 'rgba(0,70,180,0.5)' : 'rgba(0,0,0,0.5)'),
-          padding: '3px 6px',
+          padding: '3px 8px',
           borderRadius: '4px',
-          fontSize: '12px',
+          fontSize: '14px',
           pointerEvents: 'none',
           whiteSpace: 'nowrap',
           userSelect: 'none'
@@ -227,7 +192,7 @@ export const Planet: React.FC<PlanetProps> = ({
         />
       )}
       
-      {/* Children (moons, stations, etc.) */}
+      {/* Children */}
       {children}
     </group>
   );

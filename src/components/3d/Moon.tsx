@@ -1,8 +1,8 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Sphere, Html } from '@react-three/drei';
 import { Color, Vector3 } from 'three';
-import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, VISUAL_SCALE_FACTORS } from './constants';
+import { CelestialType, SCALE_FACTOR, LABEL_OFFSET, VISUAL_SCALE_FACTORS, getAdaptiveScale } from './constants';
 import { OrbitalPath } from './OrbitalPath';
 
 interface MoonProps {
@@ -40,25 +40,10 @@ export const Moon: React.FC<MoonProps> = ({
 }) => {
   const moonRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const { camera } = useThree();
   
   // Apply visual scale factor for better visibility
   const visualScaleFactor = VISUAL_SCALE_FACTORS.MOON;
-  
-  // Convert diameter from km to scene units, with visual scaling
-  const radius = (diameter / 2) / 1000000 * SCALE_FACTOR * visualScaleFactor;
-  
-  // Log debug info if debug flag is set
-  React.useEffect(() => {
-    if (debug) {
-      console.debug(`Moon ${name}:`, {
-        position,
-        diameter,
-        radius: (diameter / 2) / 1000000 * SCALE_FACTOR, // Actual radius without visual scale
-        visualRadius: radius, // Scaled radius for display
-        visualScaleFactor
-      });
-    }
-  }, [name, position, diameter, radius, debug, visualScaleFactor]);
   
   // Calculate position based on orbit if position not explicitly provided
   const calculatedPosition = useMemo(() => {
@@ -111,6 +96,28 @@ export const Moon: React.FC<MoonProps> = ({
     return new Vector3(0, 0, 0);
   }, [position, orbitData, debug, name]);
   
+  // Calculate adaptive size based on camera distance
+  const adaptiveRadius = useMemo(() => {
+    // Get distance from camera to object
+    const cameraDistance = calculatedPosition.distanceTo(camera.position);
+    
+    // Base radius calculation (same as before)
+    const baseRadius = (diameter / 2) / 1000000 * SCALE_FACTOR;
+    
+    // Apply adaptive scaling based on camera distance
+    const adaptiveSize = getAdaptiveScale(baseRadius, CelestialType.MOON, cameraDistance);
+    
+    if (debug) {
+      console.debug(`Moon ${name} adaptive sizing:`, {
+        baseRadius,
+        cameraDistance,
+        adaptiveSize
+      });
+    }
+    
+    return adaptiveSize;
+  }, [camera.position, calculatedPosition, diameter, debug, name]);
+  
   // Animation for rotation
   useFrame(({ clock }) => {
     if (moonRef.current) {
@@ -134,10 +141,10 @@ export const Moon: React.FC<MoonProps> = ({
   
   return (
     <group position={calculatedPosition}>
-      {/* Moon mesh */}
+      {/* Moon mesh - using adaptive radius */}
       <Sphere 
         ref={moonRef}
-        args={[radius, 32, 32]} 
+        args={[adaptiveRadius, 32, 32]} 
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
@@ -150,16 +157,16 @@ export const Moon: React.FC<MoonProps> = ({
         />
       </Sphere>
       
-      {/* Selection indicator */}
+      {/* Selection indicator - using adaptive radius */}
       {isSelected && (
-        <Sphere args={[radius * 1.1, 16, 16]}>
+        <Sphere args={[adaptiveRadius * 1.1, 16, 16]}>
           <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
         </Sphere>
       )}
       
-      {/* Moon label */}
+      {/* Moon label - using adaptive radius */}
       <Html 
-        position={[0, radius * LABEL_OFFSET, 0]}
+        position={[0, adaptiveRadius * LABEL_OFFSET, 0]}
         center
         className="moon-label"
         style={{
