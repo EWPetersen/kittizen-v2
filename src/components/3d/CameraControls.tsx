@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CameraMode } from './CameraController';
+import { CameraMode } from './CameraTypes';
 
 interface CameraControlsProps {
   onZoomIn: () => void;

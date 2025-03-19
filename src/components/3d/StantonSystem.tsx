@@ -3,7 +3,7 @@ import { Canvas } from './Canvas';
 import { Scene } from './Scene';
 import { SCALE_FACTOR } from './constants';
 import CameraControls from './CameraControls';
-import { CameraMode } from './CameraController';
+import { CameraMode } from './CameraTypes';
 
 interface StantonSystemProps {
   width?: string;

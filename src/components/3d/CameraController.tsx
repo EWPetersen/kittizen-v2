@@ -3,12 +3,7 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { Vector3, PerspectiveCamera, MathUtils } from 'three';
 import { PerspectiveCamera as DreiCamera, OrbitControls } from '@react-three/drei';
 import { CelestialType, SCALE_FACTOR } from './constants';
-
-export enum CameraMode {
-  OVERVIEW = 'overview',
-  ORBIT = 'orbit',
-  FIRST_PERSON = 'first_person'
-}
+import { CameraMode } from './CameraTypes';
 
 interface FocusTarget {
   position: Vector3;
@@ -23,7 +18,7 @@ interface CameraControllerProps {
   onFocusChange?: (target: FocusTarget | null) => void;
 }
 
-interface CameraControllerHandle {
+export interface CameraControllerHandle {
   changeFocus: (target: FocusTarget | null, transitionTime?: number) => void;
   setCameraMode: (mode: CameraMode) => void;
   resetView: () => void;
@@ -38,7 +33,7 @@ const DEFAULT_CAMERA_POSITION = new Vector3(0, 90, 0);
 // Debug counter to limit logging frequency
 let debugCounter = 0;
 
-export const CameraController = forwardRef<CameraControllerHandle, CameraControllerProps>(({
+const CameraController = forwardRef<CameraControllerHandle, CameraControllerProps>(({
   initialFocusTarget,
   initialCameraMode = CameraMode.OVERVIEW,
   onFocusChange

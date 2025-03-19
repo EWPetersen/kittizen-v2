@@ -8,7 +8,8 @@ import { Moon } from './Moon';
 import { Station } from './Station';
 import { JumpPoint } from './JumpPoint';
 import { SCALE_FACTOR, CelestialType } from './constants';
-import CameraController, { CameraMode } from './CameraController';
+import CameraController from './CameraController';
+import { CameraMode } from './CameraTypes';
 import systemDataService from '../../services/SystemDataService';
 
 interface SceneProps {

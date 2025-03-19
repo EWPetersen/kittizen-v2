@@ -1,7 +1,9 @@
+import React, { useRef, useState } from 'react';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
 import { Stats } from '@react-three/drei';
-import React from 'react';
-import CameraController, { CameraMode } from './CameraController';
+import CameraController from './CameraController';
+import { CameraMode } from './CameraTypes';
+import { Scene } from './Scene';
 
 interface CanvasProps {
   children: React.ReactNode;
