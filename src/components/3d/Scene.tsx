@@ -230,28 +230,56 @@ export const Scene: React.FC<SceneProps> = ({ onSelectObject, debug = true }) =>
           )}
           isSelected={selectedObject === planet.id}
           debug={debug}
-        />
+        >
+          {/* Render moons that belong to this planet */}
+          {moons
+            .filter(moon => moon.parent === planet.id)
+            .map(moon => (
+              <Moon
+                key={moon.id}
+                position={[
+                  moon.position.x - planet.position.x, 
+                  moon.position.y - planet.position.y, 
+                  moon.position.z - planet.position.z
+                ]}
+                name={moon.name}
+                diameter={moon.size}
+                color={moon.color}
+                onClick={() => handleSelectObject(moon.id)}
+                onDoubleClick={() => handleObjectDoubleClick(
+                  moon.id,
+                  moon.position,
+                  CelestialType.MOON,
+                  moon.size
+                )}
+                isSelected={selectedObject === moon.id}
+                debug={debug}
+              />
+            ))}
+        </Planet>
       ))}
       
-      {/* Moons */}
-      {moons.map(moon => (
-        <Moon
-          key={moon.id}
-          position={[moon.position.x, moon.position.y, moon.position.z]}
-          name={moon.name}
-          diameter={moon.size}
-          color={moon.color}
-          onClick={() => handleSelectObject(moon.id)}
-          onDoubleClick={() => handleObjectDoubleClick(
-            moon.id,
-            moon.position,
-            CelestialType.MOON,
-            moon.size
-          )}
-          isSelected={selectedObject === moon.id}
-          debug={debug}
-        />
-      ))}
+      {/* Only render moons that don't have a parent (should be none) */}
+      {moons
+        .filter(moon => !moon.parent || !systemData[moon.parent])
+        .map(moon => (
+          <Moon
+            key={moon.id}
+            position={[moon.position.x, moon.position.y, moon.position.z]}
+            name={moon.name}
+            diameter={moon.size}
+            color={moon.color}
+            onClick={() => handleSelectObject(moon.id)}
+            onDoubleClick={() => handleObjectDoubleClick(
+              moon.id,
+              moon.position,
+              CelestialType.MOON,
+              moon.size
+            )}
+            isSelected={selectedObject === moon.id}
+            debug={debug}
+          />
+        ))}
       
       {/* Stations */}
       {stations.map(station => (
