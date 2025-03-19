@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere } from '@react-three/drei';
+import { Sphere, Html } from '@react-three/drei';
 import { Color, ShaderMaterial, Vector3 } from 'three';
 import { SCALE_FACTOR } from './constants';
 
@@ -48,20 +48,28 @@ const fragmentShader = `
 
 interface StarProps {
   position?: [number, number, number];
-  radius?: number;
+  diameter?: number;
   color?: string;
+  name?: string;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
 }
 
 export const Star: React.FC<StarProps> = ({
   position = [0, 0, 0],
-  radius = 1.0,
-  color = '#ffaa44'
+  diameter = 1.0,
+  color = '#ffaa44',
+  name,
+  onClick,
+  onDoubleClick,
+  isSelected = false
 }) => {
   const materialRef = useRef<ShaderMaterial>(null);
   const starColor = new Color(color);
   
   // Scale the radius based on our scale factor
-  const scaledRadius = radius * SCALE_FACTOR;
+  const radius = diameter / 2;
   
   // Use useFrame to update the shader time uniform
   useFrame(({ clock }) => {
@@ -70,12 +78,27 @@ export const Star: React.FC<StarProps> = ({
     }
   });
   
+  // Handle user interactions
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    if (onClick) onClick();
+  };
+  
+  const handleDoubleClick = (e: any) => {
+    e.stopPropagation();
+    if (onDoubleClick) onDoubleClick();
+  };
+  
   // Create a glowing point light at the star's center
   return (
     <group position={new Vector3(...position)}>
       {/* Realistic star sphere with custom shader */}
-      <mesh castShadow>
-        <sphereGeometry args={[scaledRadius, 64, 64]} />
+      <mesh 
+        castShadow
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+      >
+        <sphereGeometry args={[radius, 64, 64]} />
         <shaderMaterial
           ref={materialRef}
           vertexShader={vertexShader}
@@ -91,18 +114,50 @@ export const Star: React.FC<StarProps> = ({
       <pointLight 
         color={color} 
         intensity={10} 
-        distance={100 * scaledRadius} 
+        distance={100 * radius} 
         decay={2} 
       />
       
       {/* Lens flare effect */}
-      <Sphere args={[scaledRadius * 1.05, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[radius * 1.05, 32, 32]} position={[0, 0, 0]}>
         <meshBasicMaterial 
           color={color} 
           transparent 
           opacity={0.15} 
         />
       </Sphere>
+      
+      {/* Selection indicator */}
+      {isSelected && (
+        <Sphere args={[radius * 1.15, 16, 16]} position={[0, 0, 0]}>
+          <meshBasicMaterial 
+            color="#ffffff" 
+            transparent 
+            opacity={0.2} 
+            wireframe
+          />
+        </Sphere>
+      )}
+      
+      {/* Label */}
+      {name && (
+        <Html
+          position={[0, radius * 1.4, 0]}
+          center
+          style={{
+            color: 'white',
+            backgroundColor: isSelected ? 'rgba(0,100,255,0.7)' : 'rgba(0,0,0,0.5)',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+            userSelect: 'none'
+          }}
+        >
+          {name}
+        </Html>
+      )}
     </group>
   );
 }; 

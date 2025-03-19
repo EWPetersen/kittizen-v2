@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, Ring } from '@react-three/drei';
+import { Html, Ring, Sphere } from '@react-three/drei';
 import { Color, Vector3, TorusGeometry, MeshBasicMaterial, Mesh } from 'three';
 import { CelestialType, SCALE_FACTOR, LABEL_OFFSET } from './constants';
 import { OrbitalPath } from './OrbitalPath';
@@ -18,8 +18,9 @@ interface JumpPointProps {
   size?: number; // in km
   color?: string;
   destination?: string;
-  onSelect?: (name: string) => void;
-  selected?: boolean;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
 }
 
 export const JumpPoint: React.FC<JumpPointProps> = ({
@@ -29,8 +30,9 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
   size = 20, // Default size 20 km
   color = '#ffaa22',
   destination,
-  onSelect,
-  selected = false
+  onClick,
+  onDoubleClick,
+  isSelected = false
 }) => {
   const outerRingRef = useRef<THREE.Mesh>(null);
   const innerRingRef = useRef<THREE.Mesh>(null);
@@ -68,7 +70,7 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
       
       // Pulse effect based on hover or selection
       const pulseIntensity = Math.sin(time * 2) * 0.2 + 0.8;
-      const baseOpacity = hovered || selected ? 0.9 : 0.7;
+      const baseOpacity = hovered || isSelected ? 0.9 : 0.7;
       
       if (outerRingRef.current.material instanceof MeshBasicMaterial) {
         outerRingRef.current.material.opacity = baseOpacity * pulseIntensity;
@@ -80,10 +82,17 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
     }
   });
   
-  // Handle hover and selection
+  // Handle events
   const handlePointerOver = () => setHovered(true);
   const handlePointerOut = () => setHovered(false);
-  const handleClick = () => onSelect && onSelect(name);
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    if (onClick) onClick();
+  };
+  const handleDoubleClick = (e: any) => {
+    e.stopPropagation();
+    if (onDoubleClick) onDoubleClick();
+  };
   
   return (
     <group 
@@ -91,6 +100,7 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
       {/* Outer ring */}
       <Ring
@@ -127,6 +137,13 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
         decay={2}
       />
       
+      {/* Selection indicator */}
+      {isSelected && (
+        <Sphere args={[scaledSize * 1.2, 16, 16]}>
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
+        </Sphere>
+      )}
+      
       {/* Jump point label */}
       <Html 
         position={[0, scaledSize * LABEL_OFFSET * 2, 0]}
@@ -134,13 +151,13 @@ export const JumpPoint: React.FC<JumpPointProps> = ({
         className="jump-point-label"
         style={{
           color: '#ffffff',
-          background: selected || hovered ? 'rgba(255, 160, 30, 0.7)' : 'rgba(100, 60, 10, 0.5)',
+          background: isSelected || hovered ? 'rgba(255, 160, 30, 0.7)' : 'rgba(100, 60, 10, 0.5)',
           padding: '2px 6px',
           borderRadius: '4px',
           fontSize: '9px',
           fontFamily: 'monospace',
           pointerEvents: 'none',
-          opacity: hovered || selected ? 1 : 0.7,
+          opacity: isSelected || hovered ? 1 : 0.7,
           transition: 'all 0.2s ease',
           transform: 'translateY(-50%)',
         }}

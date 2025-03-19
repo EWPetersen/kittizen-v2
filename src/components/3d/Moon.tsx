@@ -18,8 +18,9 @@ interface MoonProps {
   diameter: number; // in km
   color?: string;
   rotationPeriod?: number; // in hours
-  onSelect?: (name: string) => void;
-  selected?: boolean;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
   children?: React.ReactNode;
 }
 
@@ -30,8 +31,9 @@ export const Moon: React.FC<MoonProps> = ({
   diameter,
   color = '#aaaaaa',
   rotationPeriod = 24,
-  onSelect,
-  selected = false,
+  onClick,
+  onDoubleClick,
+  isSelected = false,
   children
 }) => {
   const moonRef = useRef<THREE.Mesh>(null);
@@ -65,10 +67,17 @@ export const Moon: React.FC<MoonProps> = ({
     }
   });
   
-  // Handle hover and selection
+  // Handle events
   const handlePointerOver = () => setHovered(true);
   const handlePointerOut = () => setHovered(false);
-  const handleClick = () => onSelect && onSelect(name);
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    if (onClick) onClick();
+  };
+  const handleDoubleClick = (e: any) => {
+    e.stopPropagation();
+    if (onDoubleClick) onDoubleClick();
+  };
   
   return (
     <group position={calculatedPosition}>
@@ -79,6 +88,7 @@ export const Moon: React.FC<MoonProps> = ({
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
       >
         <meshStandardMaterial 
           color={color} 
@@ -88,6 +98,13 @@ export const Moon: React.FC<MoonProps> = ({
         />
       </Sphere>
       
+      {/* Selection indicator */}
+      {isSelected && (
+        <Sphere args={[diameter * 1.1, 16, 16]}>
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
+        </Sphere>
+      )}
+      
       {/* Moon label */}
       <Html 
         position={[0, radius * LABEL_OFFSET, 0]}
@@ -95,13 +112,13 @@ export const Moon: React.FC<MoonProps> = ({
         className="moon-label"
         style={{
           color: '#ffffff',
-          background: selected || hovered ? 'rgba(50, 120, 200, 0.7)' : 'rgba(30, 60, 100, 0.5)',
+          background: isSelected || hovered ? 'rgba(50, 120, 200, 0.7)' : 'rgba(30, 60, 100, 0.5)',
           padding: '2px 6px',
           borderRadius: '4px',
           fontSize: '10px',
           fontFamily: 'monospace',
           pointerEvents: 'none',
-          opacity: hovered || selected ? 1 : 0.7,
+          opacity: hovered || isSelected ? 1 : 0.7,
           transition: 'all 0.2s ease',
           transform: 'translateY(-50%)',
         }}

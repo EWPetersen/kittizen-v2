@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
+import { Html, Box } from '@react-three/drei';
 import { Color, Vector3, BoxGeometry, EdgesGeometry, LineSegments, LineBasicMaterial } from 'three';
 import { CelestialType, SCALE_FACTOR, LABEL_OFFSET } from './constants';
 import { OrbitalPath } from './OrbitalPath';
@@ -18,19 +18,21 @@ interface StationProps {
   size?: number; // in km
   color?: string;
   rotationPeriod?: number; // in hours
-  onSelect?: (name: string) => void;
-  selected?: boolean;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
 }
 
 export const Station: React.FC<StationProps> = ({
   name,
-  position,
+  position = [0, 0, 0],
   orbitData,
   size = 5, // Default size 5 km
   color = '#88ddff',
   rotationPeriod = 12,
-  onSelect,
-  selected = false
+  onClick,
+  onDoubleClick,
+  isSelected = false
 }) => {
   const stationRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -80,10 +82,17 @@ export const Station: React.FC<StationProps> = ({
     }
   });
   
-  // Handle hover and selection
+  // Handle events
   const handlePointerOver = () => setHovered(true);
   const handlePointerOut = () => setHovered(false);
-  const handleClick = () => onSelect && onSelect(name);
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    if (onClick) onClick();
+  };
+  const handleDoubleClick = (e: any) => {
+    e.stopPropagation();
+    if (onDoubleClick) onDoubleClick();
+  };
   
   return (
     <group position={calculatedPosition}>
@@ -93,6 +102,7 @@ export const Station: React.FC<StationProps> = ({
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
       >
         <primitive object={stationMesh} />
         
@@ -105,6 +115,13 @@ export const Station: React.FC<StationProps> = ({
         />
       </group>
       
+      {/* Selection indicator */}
+      {isSelected && (
+        <Box args={[scaledSize * 1.2, scaledSize * 1.2, scaledSize * 1.2]}>
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
+        </Box>
+      )}
+      
       {/* Station label */}
       <Html 
         position={[0, scaledSize * LABEL_OFFSET * 2, 0]}
@@ -112,13 +129,13 @@ export const Station: React.FC<StationProps> = ({
         className="station-label"
         style={{
           color: '#ffffff',
-          background: selected || hovered ? 'rgba(30, 180, 255, 0.7)' : 'rgba(10, 80, 120, 0.5)',
+          background: isSelected || hovered ? 'rgba(30, 180, 255, 0.7)' : 'rgba(10, 80, 120, 0.5)',
           padding: '2px 6px',
           borderRadius: '4px',
           fontSize: '9px',
           fontFamily: 'monospace',
           pointerEvents: 'none',
-          opacity: hovered || selected ? 1 : 0.6,
+          opacity: hovered || isSelected ? 1 : 0.6,
           transition: 'all 0.2s ease',
           transform: 'translateY(-50%)',
         }}

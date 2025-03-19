@@ -44,8 +44,9 @@ interface PlanetProps {
   atmosphereColor?: string;
   atmosphereIntensity?: number;
   rotationPeriod?: number; // in hours
-  onSelect?: (name: string) => void;
-  selected?: boolean;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
   children?: React.ReactNode;
 }
 
@@ -58,8 +59,9 @@ export const Planet: React.FC<PlanetProps> = ({
   atmosphereColor = '#88aaff',
   atmosphereIntensity = 0.3,
   rotationPeriod = 24,
-  onSelect,
-  selected = false,
+  onClick,
+  onDoubleClick,
+  isSelected = false,
   children
 }) => {
   const planetRef = useRef<THREE.Mesh>(null);
@@ -97,7 +99,14 @@ export const Planet: React.FC<PlanetProps> = ({
   // Handle hover and selection
   const handlePointerOver = () => setHovered(true);
   const handlePointerOut = () => setHovered(false);
-  const handleClick = () => onSelect && onSelect(name);
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    if (onClick) onClick();
+  };
+  const handleDoubleClick = (e: any) => {
+    e.stopPropagation();
+    if (onDoubleClick) onDoubleClick();
+  };
   
   // Create atmosphere material
   const atmosphereMaterial = useMemo(() => {
@@ -123,6 +132,7 @@ export const Planet: React.FC<PlanetProps> = ({
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
       >
         <meshStandardMaterial 
           color={color} 
@@ -140,22 +150,27 @@ export const Planet: React.FC<PlanetProps> = ({
         <primitive object={atmosphereMaterial} attach="material" />
       </Sphere>
       
+      {/* Selection indicator */}
+      {isSelected && (
+        <Sphere args={[radius * 1.1, 32, 32]}>
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.2} wireframe />
+        </Sphere>
+      )}
+      
       {/* Planet label */}
       <Html 
         position={[0, radius * LABEL_OFFSET, 0]}
         center
         className="planet-label"
         style={{
-          color: '#ffffff',
-          background: selected || hovered ? 'rgba(0, 100, 200, 0.7)' : 'rgba(0, 40, 80, 0.5)',
-          padding: '2px 6px',
+          color: 'white',
+          backgroundColor: isSelected ? 'rgba(0,100,255,0.7)' : (hovered ? 'rgba(0,70,180,0.5)' : 'rgba(0,0,0,0.5)'),
+          padding: '3px 6px',
           borderRadius: '4px',
           fontSize: '12px',
-          fontFamily: 'monospace',
           pointerEvents: 'none',
-          opacity: hovered || selected ? 1 : 0.8,
-          transition: 'all 0.2s ease',
-          transform: 'translateY(-50%)',
+          whiteSpace: 'nowrap',
+          userSelect: 'none'
         }}
       >
         {name}
