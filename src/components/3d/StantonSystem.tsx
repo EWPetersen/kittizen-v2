@@ -20,6 +20,8 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [fps, setFps] = useState<number>(0);
+  const [selectedObject, setSelectedObject] = useState<string | null>(null);
+  const [objectInfo, setObjectInfo] = useState<any | null>(null);
   
   // Performance monitoring
   useEffect(() => {
@@ -47,6 +49,32 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
     };
   }, []);
   
+  // Handle object selection
+  const handleSelectObject = (objectId: string | null) => {
+    setSelectedObject(objectId);
+    
+    // Call parent onSelect if provided
+    if (onSelect) {
+      onSelect(objectId);
+    }
+    
+    // In a real implementation, fetch object info from the system data
+    if (objectId) {
+      // Mock info panel data
+      setObjectInfo({
+        name: objectId,
+        type: objectId.includes('Tech') ? 'Planet' : 
+              objectId.includes('Clio') ? 'Moon' : 
+              objectId.includes('Babbage') ? 'Station' : 
+              objectId.includes('Jump') ? 'Jump Point' : 'Unknown',
+        description: `Information about ${objectId}. In a complete implementation, this would include astronomical data, points of interest, and other contextual information.`,
+        // Additional properties based on type would be included here
+      });
+    } else {
+      setObjectInfo(null);
+    }
+  };
+  
   return (
     <div 
       ref={containerRef}
@@ -60,7 +88,7 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
     >
       {/* Main Canvas */}
       <Canvas showStats={showStats}>
-        <Scene />
+        <Scene onSelectObject={handleSelectObject} />
       </Canvas>
       
       {/* Performance overlay */}
@@ -98,6 +126,54 @@ export const StantonSystem: React.FC<StantonSystemProps> = ({
       >
         Scale: 1 unit = {SCALE_FACTOR} Gm
       </div>
+      
+      {/* Object information panel */}
+      {objectInfo && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            right: '10px',
+            width: '250px',
+            color: '#ffffff',
+            fontFamily: 'monospace',
+            padding: '10px',
+            backgroundColor: 'rgba(10, 20, 40, 0.8)',
+            borderLeft: '2px solid #2288cc',
+            borderRadius: '3px',
+            backdropFilter: 'blur(2px)',
+            transition: 'all 0.3s ease',
+            opacity: 0.9,
+            maxHeight: '300px',
+            overflowY: 'auto',
+          }}
+        >
+          <h3 style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#88ccff' }}>
+            {objectInfo.name}
+          </h3>
+          <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '5px' }}>
+            {objectInfo.type}
+          </div>
+          <p style={{ fontSize: '11px', lineHeight: '1.4', margin: '5px 0' }}>
+            {objectInfo.description}
+          </p>
+          <div style={{ textAlign: 'right', fontSize: '10px', marginTop: '10px' }}>
+            <button 
+              style={{
+                background: 'rgba(40, 100, 180, 0.6)',
+                border: 'none',
+                borderRadius: '3px',
+                padding: '3px 8px',
+                color: 'white',
+                cursor: 'pointer'
+              }}
+              onClick={() => handleSelectObject(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
